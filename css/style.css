@@ -34,3 +34,13 @@
     font-style: normal;
 
 }
+
+/* global style */
+
+html,body{
+  height: 100%;
+}
+
+.fullheight{
+  height: 100%;
+}
