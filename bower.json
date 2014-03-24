@@ -20,6 +20,7 @@
     "angular-bootstrap": "~0.10.0",
     "d3": "~3.4.3",
     "jquery-ui": "~1.10.4",
-    "topojson": "~1.5.2"
+    "topojson": "~1.5.2",
+    "d3-tile": "https://github.com/d3/d3-plugins/blob/master/geo/tile/tile.js"
   }
 }
