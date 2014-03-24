@@ -3,7 +3,20 @@
 /* Services */
 
 
-// Demonstrate how to register services
-// In this case it is a simple value service.
-angular.module('myApp.services', []).
-  value('version', '0.1');
+angular.module('ccfs14.services', [])
+  .factory('fileService', function($http, $q) {
+
+   return {
+
+     getFile : function(url){
+       var deferred = $q.defer();
+       $http.get(url).success(function(data){
+         deferred.resolve(data);
+       }).error(function(){
+         deferred.reject("An error occured while fetching file");
+       });
+
+       return deferred.promise;
+     }
+   }
+  })

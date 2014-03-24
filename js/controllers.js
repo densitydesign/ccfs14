@@ -2,10 +2,10 @@
 
 /* Controllers */
 
-angular.module('myApp.controllers', []).
-  controller('MyCtrl1', [function() {
+angular.module('ccfs14.controllers', []).
+  controller('geocity', function($scope, $window) {
 
-  }])
-  .controller('MyCtrl2', [function() {
+  })
+  .controller('geodistrict', function($scope, $window) {
 
-  }]);
+  });
