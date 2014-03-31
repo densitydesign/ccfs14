@@ -2,7 +2,7 @@
   "name": "ccfsserver",
   "version": "0.0.1",
   "description": "backend for sensible city fuori salone",
-  "main": "index.js",
+  "main": "ccfs.server.js",
   "dependencies": {
     "express": "~3.5.1",
     "socket.io": "~0.9.16"
