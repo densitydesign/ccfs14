@@ -16,5 +16,6 @@ node_modules
 
 .DS_Store
 
-lib/bower_components/
-data/
+client/lib/bower_components/
+client/data/
+server/node_modules/
