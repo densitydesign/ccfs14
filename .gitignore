@@ -19,3 +19,4 @@ node_modules
 client/lib/bower_components/
 client/data/
 server/node_modules/
+tiles_server/node_modules/
