@@ -10,7 +10,6 @@ angular.module('ccfs14.services', [])
 
      getFile : function(url){
        var deferred = $q.defer();
-       console.log(url)
        $http.get(url).success(function(data){
          deferred.resolve(data);
        }).error(function(){

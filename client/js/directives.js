@@ -11,23 +11,32 @@ angular.module('ccfs14.directives', [])
       templateUrl: 'partials/mapcontainer.html',
       link: function(scope, element, attrs) {
 
+        var width = element.width(),
+            height = element.height()
+
         var map = ccfs.map()
-                    .width(element.width())
-                    .height(element.height())
+                    .width(width)
+                    .height(height)
 
         var chartMap = d3.select(element[0]).call(map)
 
         var bikemi = ccfs.bikemi()
-                      .width(element.width())
-                      .height(element.height())
+                    .width(width)
+                    .height(height)
 
         var chartBikemi = d3.select(element[0])
 
         var district = ccfs.district()
-              .width(element.width())
-              .height(element.height())
+                    .width(width)
+                    .height(height)
 
         var chartDistrict = d3.select(element[0])
+
+        var mask = ccfs.mask()
+                    .width(width)
+                    .height(height)
+
+        var chartMask = d3.select(element[0])
 
         scope.$watch('bikemiJson', function(newValue, oldValue){
           if(newValue != oldValue){
@@ -38,6 +47,12 @@ angular.module('ccfs14.directives', [])
         scope.$watch('districtJson', function(newValue, oldValue){
           if(newValue != oldValue){
             chartDistrict.datum(scope.districtJson).call(district);
+          }
+        })
+
+        scope.$watch('maskJson', function(newValue, oldValue){
+          if(newValue != oldValue){
+            chartMask.datum(scope.maskJson).call(mask);
           }
         })
 

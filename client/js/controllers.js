@@ -7,13 +7,15 @@ angular.module('ccfs14.controllers', [])
 
     $scope.bikemiUrl = "data/bikemi.json";
     $scope.districtUrl = "data/district.json";
+    $scope.maskUrl = "data/mask.json";
     $scope.bikemiJson;
     $scope.districtJson;
+    $scope.maskJson;
 
     fileService.getFile($scope.districtUrl).then(
         function(data){
           $scope.districtJson = data;
-          $scope.getBikemi()
+          $scope.getMask()
         },
         function(error){
 
@@ -24,6 +26,18 @@ angular.module('ccfs14.controllers', [])
       fileService.getFile($scope.bikemiUrl).then(
         function(data){
           $scope.bikemiJson = data;
+        },
+        function(error){
+
+        }
+      );
+    }
+
+    $scope.getMask = function(){
+      fileService.getFile($scope.maskUrl).then(
+        function(data){
+          $scope.maskJson = data;
+          $scope.getBikemi()
         },
         function(error){
 
