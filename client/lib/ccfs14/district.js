@@ -6,6 +6,7 @@
 
     var height = 600,
         width = 600,
+        projection,
         dispatch = d3.dispatch("clicked");
 
 
@@ -24,11 +25,6 @@
           .attr('width', width)
           .attr('height', height)
         }
-
-        var projection = d3.geo.mercator()
-            .center([9.1916, 45.4640])
-            .scale((17 << 18) / 2 / Math.PI)
-            .translate([width / 2, height / 2]);
 
         var path = d3.geo.path()
             .projection(projection)
@@ -54,6 +50,12 @@
   district.width = function(x){
     if (!arguments.length) return width;
     width = x;
+    return district;
+  }
+
+  district.projection = function(x){
+    if (!arguments.length) return projection;
+    projection = x;
     return district;
   }
 

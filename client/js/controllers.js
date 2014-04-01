@@ -45,6 +45,13 @@ angular.module('ccfs14.controllers', [])
       );
     }
 
+    $scope.date = new Date();
+    
+    $scope.info = {
+      title: "citysensing",
+      city: "Milano"
+    }
+
     $scope.areas = [
       {name: "Brera Design District", cells : [5858, 5859, 5860, 5861, 5758, 5759, 5760, 5761, 5658, 5659, 5660, 5661, 5558, 5559, 5560, 5561, 5458, 5459, 5460, 5461, 5358, 5359, 5360, 5361, 5258, 5259, 5260, 5261]},
       {name: "Zona Tortona", cells : [4749, 4750, 4751, 4752, 4753, 4649, 4650, 4651, 4652, 4653, 4549, 4550, 4551, 4552, 4553, 4449, 4450, 4451, 4452, 4453]},
