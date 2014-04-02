@@ -54,7 +54,7 @@
           .attr("font-size", "0.85em")
           .attr("fill", "white")
           .attr("kerning", 1.5)
-          .text(function(d){return d.properties.id.toUpperCase()})
+          .text(function(d){return d.properties.label.toUpperCase()})
 
       }); //end selection
     } // end mask

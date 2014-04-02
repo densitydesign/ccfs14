@@ -88,6 +88,13 @@ body{
     margin-top: 10px;
 }
 
+#info-container .box{
+  font-family: "clear_sans_lightregular", sans-serif;
+  padding: 3px;
+  border: 1px white solid;
+  font-size: 0.8em;
+}
+
 .axis path,
 .axis line {
   fill: none;
