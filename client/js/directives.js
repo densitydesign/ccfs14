@@ -81,7 +81,47 @@ angular.module('ccfs14.directives', [])
       replace: true,
       templateUrl: 'partials/timelinecontainer.html',
       link: function(scope, element, attrs) {
+        fileService.getFile('data/stackedtest.json').then(
+            function(data){
 
+              var stackedTweet = ccfs.stackedArea()
+                                        .width(element.find("#timeline-tweet").width())
+                                        .height(element.find("#timeline-tweet").height())
+                                        .stackColors(["#0EA789", "#0EA789"])
+
+              var chartTweet = d3.select(element.find("#timeline-tweet")[0])
+
+              chartTweet.datum(data).call(stackedTweet)
+
+              var stackedCall = ccfs.stackedArea()
+                          .width(element.find("#timeline-call").width())
+                          .height(element.find("#timeline-call").height())
+                          .stackColors(["#fff","#fff"])
+
+              var chartCall = d3.select(element.find("#timeline-call")[0])
+
+              chartCall.datum(data).call(stackedCall)
+
+              var stackedBike = ccfs.stackedArea()
+                          .width(element.find("#timeline-bike").width())
+                          .height(element.find("#timeline-bike").height())
+                          .stackColors(["#FFE100","#FFE100"])
+
+              var chartBike = d3.select(element.find("#timeline-bike")[0])
+
+              chartBike.datum(data).call(stackedBike)
+
+              $timeout(function() {
+                    chartBike.call(stackedBike.brushDate(1120104000000))
+                    chartCall.call(stackedCall.brushDate(1120104000000))
+                    chartTweet.call(stackedTweet.brushDate(1120104000000))
+              }, 5000);
+              
+            },
+            function(error){
+
+            }
+          );
       }
     }
   }])
@@ -91,16 +131,24 @@ angular.module('ccfs14.directives', [])
       replace: true,
       templateUrl: 'partials/infocontainer.html',
       link: function(scope, element, attrs) {
-        var container = element.find('.content')[0]
+        var container = d3.select(element.find('.content')[0])
 
-        d3.select(container).append('h2')
+        container.append('h2')
+          .attr("class", "opacity80")
           .text(scope.info.title.toUpperCase())
 
-        d3.select(container).append('p')
-          .text(scope.date)
+        container.append('p')
+          .text(scope.date.getDate() + " " + scope.months[scope.date.getMonth()] + " " + scope.date.getFullYear())
 
-        d3.select(container).append('p')
-          .text(scope.info.city)
+        container.append('h1')
+          .html("<span class='opacity80'>h </span>" + (scope.date.getHours()<10?'0':'') + scope.date.getHours() + "<span class='opacity80'>:</span>" + (scope.date.getMinutes()<10?'0':'') + scope.date.getMinutes())
+
+        scope.$watch('date', function(newValue, oldValue){
+          if(newValue != oldValue){
+            container.select('h1')
+              .html("<span class='opacity80'>h </span>" + (newValue.getHours()<10?'0':'') + newValue.getHours() + "<span class='opacity80'>:</span>" + (newValue.getMinutes()<10?'0':'') + newValue.getMinutes())
+          }
+        })
 
       }
     }
