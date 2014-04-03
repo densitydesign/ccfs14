@@ -20,3 +20,12 @@ angular.module('ccfs14.services', [])
      }
    }
   })
+  // .factory('ccfsSocket', function (socketFactory) {
+  //   var ccfsIoSocket = io.connect('http://localhost:8000');
+
+  //   var ccfsSocket = socketFactory({
+  //     ioSocket: ccfsIoSocket
+  //   });
+
+  //   return ccfsSocket;
+  // })

@@ -14,25 +14,26 @@ angular.module('ccfs14.directives', [])
         var width = element.width(),
             height = element.height(),
             projection = d3.geo.mercator(),
-                          //.center([9.1916, 45.4640])
-                          //.scale((15 << 18) / 2 / Math.PI)
-                          //.scale(709265)
-                          //.translate([width / 2, height / 2]);
-            path = d3.geo.path().projection(projection)
+            path = d3.geo.path().projection(projection),
+            b = path.bounds(scope.districtJson),
+            s = 100 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
+            t = [width/ 2, height / 2];
+
+        projection.scale(s).translate(t).center([9.1916, 45.4640])
 
         var map = ccfs.map()
                     .width(width)
                     .height(height)
                     .projection(projection)
 
-        //var chartMap = d3.select(element[0]).call(map)
+        var chartMap = d3.select(element[0]).call(map)
 
-        var bikemi = ccfs.bikemi()
-                    .width(width)
-                    .height(height)
-                    .projection(projection)
+        // var bikemi = ccfs.bikemi()
+        //             .width(width)
+        //             .height(height)
+        //             .projection(projection)
 
-        var chartBikemi = d3.select(element[0])
+        // var chartBikemi = d3.select(element[0])
 
         var district = ccfs.district()
                     .width(width)
@@ -41,6 +42,8 @@ angular.module('ccfs14.directives', [])
 
         var chartDistrict = d3.select(element[0])
 
+        chartDistrict.datum(scope.districtJson).call(district.projection(projection))
+
         var mask = ccfs.mask()
                     .width(width)
                     .height(height)
@@ -48,27 +51,23 @@ angular.module('ccfs14.directives', [])
 
         var chartMask = d3.select(element[0])
 
+        chartMask.datum(scope.maskJson).call(mask.projection(projection))
+
         scope.$watch('bikemiJson', function(newValue, oldValue){
           if(newValue != oldValue){
-            chartBikemi.datum(scope.bikemiJson).call(bikemi.projection(projection));
+
           }
         })
 
         scope.$watch('districtJson', function(newValue, oldValue){
           if(newValue != oldValue){
-            var b = path.bounds(scope.districtJson),
-                s = 100 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
-                t = [width/ 2, height / 2];
-            
-            projection.scale(s).translate(t).center([9.1916, 45.4640])
-            d3.select(element[0]).call(map.projection(projection))
-            chartDistrict.datum(scope.districtJson).call(district.projection(projection));
+
           }
         })
 
         scope.$watch('maskJson', function(newValue, oldValue){
           if(newValue != oldValue){
-            chartMask.datum(scope.maskJson).call(mask.projection(projection));
+
           }
         })
 
@@ -85,25 +84,27 @@ angular.module('ccfs14.directives', [])
         var width = element.width(),
             height = element.height(),
             projection = d3.geo.mercator(),
-                          //.center([9.1916, 45.4640])
-                          //.scale((15 << 18) / 2 / Math.PI)
-                          //.scale(709265)
-                          //.translate([width / 2, height / 2]);
-            path = d3.geo.path().projection(projection)
+            path = d3.geo.path().projection(projection),
+            b = path.bounds(scope.districtJson),
+            s = 100 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
+            t = [width/ 2, height / 2],
+            center = d3.geo.centroid(scope.districtJson);
+
+        projection.scale(s).translate(t).center(center)
 
         var map = ccfs.map()
                     .width(width)
                     .height(height)
                     .projection(projection)
 
-        //var chartMap = d3.select(element[0]).call(map)
+        var chartMap = d3.select(element[0]).call(map)
 
-        var bikemi = ccfs.bikemi()
-                    .width(width)
-                    .height(height)
-                    .projection(projection)
+        // var bikemi = ccfs.bikemi()
+        //             .width(width)
+        //             .height(height)
+        //             .projection(projection)
 
-        var chartBikemi = d3.select(element[0])
+        // var chartBikemi = d3.select(element[0])
 
         var district = ccfs.district()
                     .width(width)
@@ -112,6 +113,8 @@ angular.module('ccfs14.directives', [])
 
         var chartDistrict = d3.select(element[0])
 
+        chartDistrict.datum(scope.districtJson).call(district.projection(projection))
+
         var mask = ccfs.mask()
                     .width(width)
                     .height(height)
@@ -119,28 +122,23 @@ angular.module('ccfs14.directives', [])
 
         var chartMask = d3.select(element[0])
 
+        chartMask.datum(scope.maskJson).call(mask.projection(projection))
+
         scope.$watch('bikemiJson', function(newValue, oldValue){
           if(newValue != oldValue){
-            chartBikemi.datum(scope.bikemiJson).call(bikemi.projection(projection));
+
           }
         })
 
         scope.$watch('districtJson', function(newValue, oldValue){
           if(newValue != oldValue){
-            var b = path.bounds(scope.districtJson),
-                s = 90 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
-                t = [width/ 2, height / 2];
-            
-            var center = d3.geo.centroid(scope.districtJson)
-            projection.scale(s).translate(t).center(center)
-            d3.select(element[0]).call(map.projection(projection))
-            chartDistrict.datum(scope.districtJson).call(district.projection(projection));
+
           }
         })
 
         scope.$watch('maskJson', function(newValue, oldValue){
           if(newValue != oldValue){
-            chartMask.datum(scope.maskJson).call(mask.projection(projection));
+
           }
         })
 
@@ -227,7 +225,7 @@ angular.module('ccfs14.directives', [])
       }
     }
   }])
-  .directive('infoContainer',[ 'fileService', '$timeout', function (fileService, $timeout){
+  .directive('infoContainer',[ 'fileService', '$timeout', 'monthsITFilter', function (fileService, $timeout, monthsIT){
     return {
       restrict: 'A',
       replace: true,
@@ -240,7 +238,7 @@ angular.module('ccfs14.directives', [])
           .text(scope.info.title.toUpperCase())
 
         container.append('p')
-          .text(scope.date.getDate() + " " + scope.months[scope.date.getMonth()] + " " + scope.date.getFullYear())
+          .text(scope.date.getDate() + " " + monthsIT(scope.date.getMonth()) + " " + scope.date.getFullYear())
 
         container.append('h1')
           .html("<span class='opacity80'>h </span>" + (scope.date.getHours()<10?'0':'') + scope.date.getHours() + "<span class='opacity80'>:</span>" + (scope.date.getMinutes()<10?'0':'') + scope.date.getMinutes())
