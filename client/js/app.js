@@ -8,10 +8,39 @@ angular.module('ccfs14', [
   'ccfs14.filters',
   'ccfs14.services',
   'ccfs14.directives',
-  'ccfs14.controllers'
-]).
+  'ccfs14.controllers',
+  'btford.socket-io'
+  ]).
 config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/geocity', {templateUrl: 'partials/geocity.html', controller: 'geocity'});
-  $routeProvider.when('/geodistrict/:district', {templateUrl: 'partials/geodistrict.html', controller: 'geodistrict'});
+  $routeProvider.when('/geocity', {
+  	templateUrl: 'partials/geocity.html', 
+  	controller: 'geocity', 
+  	resolve: {
+      district : function (fileService) {
+        return fileService.getFile('data/district.json')
+      },
+      mask : function (fileService) {
+        return fileService.getFile('data/mask.json')
+      }, 
+      stacked : function (fileService) {
+        return fileService.getFile('data/stackedtest.json')
+      }, 
+    }
+  });
+  $routeProvider.when('/geodistrict/:district', {
+    templateUrl: 'partials/geodistrict.html', 
+    controller: 'geodistrict',
+    resolve: {
+      district : function (fileService) {
+        return fileService.getFile('data/district.json')
+      },
+      mask : function (fileService) {
+        return fileService.getFile('data/mask.json')
+      }, 
+      stacked : function (fileService) {
+        return fileService.getFile('data/stackedtest.json')
+      }, 
+    }
+  });
   $routeProvider.otherwise({redirectTo: '/geocity'});
 }]);
