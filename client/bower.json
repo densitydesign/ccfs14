@@ -22,6 +22,8 @@
     "jquery-ui": "~1.10.4",
     "topojson": "~1.5.2",
     "d3-tile": "https://raw.githubusercontent.com/d3/d3-plugins/master/geo/tile/tile.js",
-    "bootstrap": "~3.1.1"
+    "bootstrap": "~3.1.1",
+    "angular-socket-io": "~0.4.1",
+    "socket.io-client": "~0.9.16"
   }
 }
