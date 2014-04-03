@@ -5,11 +5,7 @@ var fs=require('fs');
 var io = require('socket.io').listen(server);
 var _ = require("underscore")
 
-/*app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
-});*/
-
-//io.set("origins","*:*")
+io.set('log level', 1); 
 
 var data_url="../sample_data/"
 var map_url=data_url+"map/"
@@ -63,11 +59,14 @@ io.sockets.on('connection', function (socket) {
 	
 	var sendData = function() {
 		inc++;
-		
+		console.log(inc)
 		//twitter
 		emitTwitter(inc,socket)
 		//stalls
 		emitStalls(inc,socket)
+		//all districts
+		emitDistricts(inc, socket)
+
 		
 	}
 	var run = setInterval(sendData, 2000);
@@ -83,7 +82,7 @@ io.sockets.on('connection', function (socket) {
 
 
 function emitTwitter(i,socket) {
-	val=i%districts.general.length;
+	var val=i%districts.general.length;
 	var data;
 	fs.readFile(map_url+districts.general[val], 'utf8', function (err, data) {
 	  if (err) {
@@ -91,8 +90,7 @@ function emitTwitter(i,socket) {
 	    return;
 	  }
 	  data = JSON.parse(data);
-	  
-	  //data.time=districts.general[val].replace(/\.[^/.]+$/, "")
+
 		cells=data.cells;
 		var res={"time":districts.general[val].replace(/\.[^/.]+$/, ""),"type": "FeatureCollection","features": []}
 		cells.forEach(function(d,j){
@@ -106,8 +104,7 @@ function emitTwitter(i,socket) {
 }
 
 function emitStalls(i, socket) {
-	
-	val=i%bike_stalls.general.length;
+	var val=i%bike_stalls.general.length;
 	var data;
 	fs.readFile(bike_stall_url+bike_stalls.general[val], 'utf8', function (err, data) {
 	  if (err) {
@@ -126,5 +123,30 @@ function emitStalls(i, socket) {
 	});
 } 
 
-
-
+function emitDistricts(i,socket) {
+	var distr = _.omit(districts,'general');
+	var filtDistr=_.pairs(_.pick(distr,['Brera','Tortona','Lambrate','PRomana']))
+	filtDistr.forEach(function(d,j) {
+		
+		console.log(i,d[1].length,i%d[1].length)
+		var val=i%d[1].length;
+		//console.log(val,map_url+d[0]+"/"+d[1][val])
+		
+		var data;
+		
+		fs.readFile(map_url+d[0]+"/"+d[1][val], 'utf8', function (err, data) {
+		  if (err) {
+		    console.log('Error: ' + err);
+		    return;
+		  }
+		  data = JSON.parse(data);
+		var cells=data.cells
+		var res={"time":d[1][val].replace(/\.[^/.]+$/, ""),"type": "FeatureCollection","features": []}
+			cells.forEach(function(d,j){	
+					var obj={"type":"Feature","properties":{"id":d.id,"mobile":d.mobily_activity}}
+					res["features"].push(obj)
+			})
+			socket.emit(d[0],res)
+		});
+	})
+}
