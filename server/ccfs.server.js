@@ -52,6 +52,11 @@ var bike_timeline=structureData(bike_tl_url)
 var bike_stalls=structureData(bike_stall_url)
 
 
+
+
+//================
+//Emit events
+//================
 io.sockets.on('connection', function (socket) {
 	
 	var inc=-1;
@@ -60,7 +65,9 @@ io.sockets.on('connection', function (socket) {
 		inc++;
 		
 		//twitter
-		var res = emitTwitter(inc,socket)
+		emitTwitter(inc,socket)
+		//stalls
+		emitStalls(inc,socket)
 		
 	}
 	var run = setInterval(sendData, 2000);
@@ -68,6 +75,11 @@ io.sockets.on('connection', function (socket) {
     clearInterval(run);
 	});
 });
+
+//================
+
+
+
 
 
 function emitTwitter(i,socket) {
@@ -78,25 +90,41 @@ function emitTwitter(i,socket) {
 	    console.log('Error: ' + err);
 	    return;
 	  }
-	 
 	  data = JSON.parse(data);
 	  
 	  //data.time=districts.general[val].replace(/\.[^/.]+$/, "")
-	cells=data.cells;
-	var res={"time":districts.general[val].replace(/\.[^/.]+$/, ""),"type": "FeatureCollection","features": []}
-	cells.forEach(function(d,j){
-		if(centroids[d.id] && d.social_activity>0 ) {
-			var obj={"type":"Feature","properties":{"id":d.id,"social":d.social_activity},"geometry":centroids[d.id].geometry}
-			res["features"].push(obj)
-		}
-		
-	})
-	
-	
+		cells=data.cells;
+		var res={"time":districts.general[val].replace(/\.[^/.]+$/, ""),"type": "FeatureCollection","features": []}
+		cells.forEach(function(d,j){
+			if(centroids[d.id] && d.social_activity>0 ) {
+				var obj={"type":"Feature","properties":{"id":d.id,"social":d.social_activity},"geometry":centroids[d.id].geometry}
+				res["features"].push(obj)
+			}
+		})
 	  socket.emit('twitter', res);
 	});
 }
 
+function emitStalls(i, socket) {
+	
+	val=i%bike_stalls.general.length;
+	var data;
+	fs.readFile(bike_stall_url+bike_stalls.general[val], 'utf8', function (err, data) {
+	  if (err) {
+	    console.log('Error: ' + err);
+	    return;
+	  }
+	  data = JSON.parse(data);
+	  
+	  //data.time=districts.general[val].replace(/\.[^/.]+$/, "")
+		stalls=data.stalls;
+		var res={"time":bike_stalls.general[val].replace(/\.[^/.]+$/, ""),"stalls":[]}
+		stalls.forEach(function(d,j){
+			res.stalls.push({"id":d.id, "percent":d.percentageOfAvailableBikes})
+		})
+	  socket.emit('stalls', res);
+	});
+} 
 
 
 
