@@ -161,9 +161,10 @@ function emitStalls(i, socket) {
 	  
 	  //data.time=districts.general[val].replace(/\.[^/.]+$/, "")
 		stalls=data.stalls;
-		var res={"time":bike_stalls.general[val].replace(/\.[^/.]+$/, ""),"stalls":[]}
+		var res={"time":bike_stalls.general[val].replace(/\.[^/.]+$/, ""),"type": "FeatureCollection","features": []}
+		//var res={"time":bike_stalls.general[val].replace(/\.[^/.]+$/, ""),"stalls":[]}
 		stalls.forEach(function(d,j){
-			res.stalls.push({"id":d.id, "percent":d.percentageOfAvailableBikes})
+			res.features.push({"type":"Feature","properties":{"id":d.id, "percent":d.percentageOfAvailableBikes},"geometry":{"type":"Point","coordinates":[d.longitude,d.latitude]}})
 		})
 	  socket.emit('stalls', res);
 	});
