@@ -43,14 +43,18 @@ angular.module('ccfs14.controllers', [])
 
   
   })
-  .controller('usernet', function($scope, $window, $routeParams, fileService, district, mask, stacked, districtCellFilter, districtMaskFilter) {
+  .controller('usernet', function($scope, $window, $routeParams, fileService, ccfsSocket,district, mask, stacked, districtCellFilter, districtMaskFilter) {
 
-    //$scope.date = new Date();
+    $scope.date = new Date();
     
     $scope.info = {
       title: "citysensing",
       city: "Milano",
     }
+    
+    ccfsSocket.on('net-general', function(data) {
+      $scope.netJson = data
+    });
 
     //$scope.bikemiUrl = "data/bikemi.json";
     //$scope.bikemiJson;
@@ -58,9 +62,9 @@ angular.module('ccfs14.controllers', [])
     //$scope.maskJson = districtMaskFilter($scope.info.districtId, mask)
 
   })
-   .controller('netdistrict', function($scope, $window, $routeParams, fileService, district, mask, stacked, districtCellFilter, districtMaskFilter) {
+   .controller('netdistrict', function($scope, $window, $routeParams, fileService, ccfsSocket, district, mask, stacked, districtCellFilter, districtMaskFilter) {
 
-    //$scope.date = new Date();
+    $scope.date = new Date();
     
     $scope.info = {
       title: "citysensing",
