@@ -159,10 +159,9 @@ function emitStalls(i, socket) {
 	  }
 	  data = JSON.parse(data);
 	  
-	  //data.time=districts.general[val].replace(/\.[^/.]+$/, "")
+	  
 		stalls=data.stalls;
 		var res={"time":bike_stalls.general[val].replace(/\.[^/.]+$/, ""),"type": "FeatureCollection","features": []}
-		//var res={"time":bike_stalls.general[val].replace(/\.[^/.]+$/, ""),"stalls":[]}
 		stalls.forEach(function(d,j){
 			res.features.push({"type":"Feature","properties":{"id":d.id, "percent":d.percentageOfAvailableBikes},"geometry":{"type":"Point","coordinates":[d.longitude,d.latitude]}})
 		})
@@ -177,7 +176,6 @@ function emitDistricts(i,socket) {
 		
 		console.log(i,d[1].length,i%d[1].length)
 		var val=i%d[1].length;
-		//console.log(val,map_url+d[0]+"/"+d[1][val])
 		
 		var data;
 		
@@ -205,8 +203,6 @@ function emitUsers(i,socket) {
 	filtUsr.forEach(function(d,j) {
 		
 		var val=i%d[1].length;
-		
-		console.log(d[0],d[1][val])
 
 		var data;
 		var file_url;

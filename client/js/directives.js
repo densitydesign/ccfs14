@@ -272,3 +272,69 @@ angular.module('ccfs14.directives', [])
       }
     }
   }])
+
+  .directive('netCity',[ 'fileService', '$timeout', 'monthsITFilter', function (fileService, $timeout, monthsIT){
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'partials/net-container.html',
+      link: function(scope, element, attrs) {
+        //var container = d3.select(element.find('.content')[0])
+                    var network = ccfs.network()
+                    .width(element.width())
+                    .height(element.height())
+                    
+					//console.log(element.find("#net-container").width(), element.find("#net-container").height())
+					
+        var chartNet = d3.select("#net-container")
+
+           scope.$watch('netJson', function(newValue, oldValue){
+          if(newValue != oldValue){
+            //chartTweet.datum(newValue).call(tweet)
+            console.log(newValue)
+            chartNet.datum(newValue).call(network)
+
+          }
+        })
+
+      }
+    }
+  }])
+
+.directive('barchartVenues',[ 'fileService', '$timeout', function (fileService, $timeout){
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'partials/barcontainer.html',
+      link: function(scope, element, attrs) {
+        fileService.getFile('data/testvenues.json').then(
+            function(data){
+
+              //Funzione che appende il grafico
+              var barVenue = ccfs.barChart()
+                                        .width(element.find(".content").width())
+                                        .height(element.find(".content").height())
+                                        //.stackColors(["#0EA789", "#0EA789"])
+
+              // console.log(element.find(".content").width());
+              // console.log(element.find(".content").height());
+
+              //Elemento a cui lego i dati e ci metto la vis
+              var barVenueCont = d3.select(element.find(".content")[0])
+
+              barVenueCont.datum(data.venues).call(barVenue)
+
+              // //funzione che refresha i dati ogni 5 sec
+              // $timeout(function() {
+              //       barVenueCont.call(barVenue.brushDate(1120104000000))
+              // }, 5000);
+              
+            },
+            function(error){
+              //chiamata quando ci sono errori nella lettura dei file  dei dati
+            }
+          );
+      }
+    }
+  }])
+
