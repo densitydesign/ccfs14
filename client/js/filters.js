@@ -40,5 +40,22 @@ angular.module('ccfs14.filters', [])
       return data
     }
   })
+  .filter('biketimeline', function() {
+    var timeline = [
+      {"key": "available bikes", values : []},
+      {"key": "in use bikes", values : []}
+    ]
+    return function(data) {
+        data.steps.sort(function(a, b) { return d3.descending(a.start, b.start); })
+        data.steps.forEach(function(d){
+
+          timeline[0].values.push({date:d.start, value: d.availableBikes})
+          timeline[1].values.push({date:d.start, value: d.inUseBikes})
+
+        })
+
+      return timeline
+    }
+  })
 
 
