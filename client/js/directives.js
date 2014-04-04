@@ -42,7 +42,7 @@ angular.module('ccfs14.directives', [])
 
         var chartDistrict = d3.select(element[0])
 
-        chartDistrict.datum(scope.districtJson).call(district.projection(projection))
+        chartDistrict.datum(scope.districtJson).call(district)
 
         var mask = ccfs.mask()
                     .width(width)
@@ -51,7 +51,15 @@ angular.module('ccfs14.directives', [])
 
         var chartMask = d3.select(element[0])
 
-        chartMask.datum(scope.maskJson).call(mask.projection(projection))
+        chartMask.datum(scope.maskJson).call(mask)
+
+        var tweet = ccfs.tweet()
+                    .width(width)
+                    .height(height)
+                    .projection(projection)
+
+        var chartTweet = d3.select(element[0])
+
 
         scope.$watch('bikemiJson', function(newValue, oldValue){
           if(newValue != oldValue){
@@ -59,15 +67,9 @@ angular.module('ccfs14.directives', [])
           }
         })
 
-        scope.$watch('districtJson', function(newValue, oldValue){
+        scope.$watch('tweetJson', function(newValue, oldValue){
           if(newValue != oldValue){
-
-          }
-        })
-
-        scope.$watch('maskJson', function(newValue, oldValue){
-          if(newValue != oldValue){
-
+            //chartTweet.datum(newValue).call(tweet)
           }
         })
 

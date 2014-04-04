@@ -3,11 +3,7 @@
 /* Controllers */
 
 angular.module('ccfs14.controllers', [])
-  .controller('geocity', function($scope, $window, fileService, /*ccfsSocket,*/ district, mask, stacked) {
-
-    // ccfsSocket.on('twitter', function(data) {
-    //   console.log(data)
-    // });
+  .controller('geocity', function($scope, $window, fileService, ccfsSocket, district, mask, stacked) {
 
     $scope.date = new Date();
     
@@ -20,6 +16,10 @@ angular.module('ccfs14.controllers', [])
     $scope.bikemiJson;
     $scope.districtJson = district;
     $scope.maskJson = mask;
+
+    ccfsSocket.on('twitter', function(data) {
+      $scope.tweetJson = data
+    });
 
 
   })
