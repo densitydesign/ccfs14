@@ -5,14 +5,20 @@
   ccfs.network = function(){
 
     var height = 600,
-        width = 600
+        width = 600,
+        update;
 
 
     function net(selection){
       selection.each(function(data){
         
         var graph = data;
-        var vis;
+        var vis,force;
+        
+        update=function() {
+        	console.log(force)
+        	//return force;
+        }
                  
         
         if (selection.select('svg').empty()){
@@ -31,7 +37,7 @@
 
 		var max = d3.max(data.nodes, function(e){return e.socialActivity});
 		var lerp = d3.scale.linear().domain([0,max]).range([0,1000])  
-		var force=d3.layout.force();
+		force=d3.layout.force();
 		
 		force
         .nodes(graph.nodes,function(e){return e.id})
@@ -97,16 +103,13 @@
 		    .append("text")
 		    .attr("x",0)
 		    .attr("y",function(d){return Math.sqrt(lerp(d.socialActivity)/Math.PI)+12})
-		    .text("lol")
+		    .text(function(d){return d.name})
 		    .attr("text-anchor","middle")
 		    .attr("font-family","sans-serif")
 		    .style("fill","#fff")
 		      
 		      
 		      node.exit().remove();
-		
-		    
-		
 		
 		    force.on("tick", function() {
 		      link.attr("x1", function(d) { return d.source.x; })
@@ -132,6 +135,11 @@
     if (!arguments.length) return width;
     width = x;
     return net;
+  }
+  
+  net.update = function(data) {
+  	update()
+  	return net;
   }
 
   return net;
