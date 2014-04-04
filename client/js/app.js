@@ -42,5 +42,35 @@ config(['$routeProvider', function($routeProvider) {
       }, 
     }
   });
+  $routeProvider.when('/usernet', {
+  	templateUrl: 'partials/usernet.html', 
+  	controller: 'usernet', 
+  	resolve: {
+      district : function (fileService) {
+        return fileService.getFile('data/district.json')
+      },
+      mask : function (fileService) {
+        return fileService.getFile('data/mask.json')
+      }, 
+      stacked : function (fileService) {
+        return fileService.getFile('data/stackedtest.json')
+      }, 
+    }
+  });
+   $routeProvider.when('/netdistrict/:district', {
+  	templateUrl: 'partials/netdistrict.html', 
+  	controller: 'netdistrict', 
+  	resolve: {
+      district : function (fileService) {
+        return fileService.getFile('data/district.json')
+      },
+      mask : function (fileService) {
+        return fileService.getFile('data/mask.json')
+      }, 
+      stacked : function (fileService) {
+        return fileService.getFile('data/stackedtest.json')
+      }, 
+    }
+  });
   $routeProvider.otherwise({redirectTo: '/geocity'});
 }]);
