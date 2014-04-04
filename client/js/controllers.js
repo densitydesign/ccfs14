@@ -21,7 +21,6 @@ angular.module('ccfs14.controllers', [])
       $scope.tweetJson = data
     });
 
-
   })
   .controller('geodistrict', function($scope, $window, $routeParams, fileService, district, mask, stacked, districtCellFilter, districtMaskFilter) {
 

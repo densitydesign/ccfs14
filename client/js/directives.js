@@ -60,6 +60,80 @@ angular.module('ccfs14.directives', [])
 
         var chartTweet = d3.select(element[0])
 
+         var tweetData1 = {
+    "time": "1365581699000",
+    "type": "FeatureCollection",
+    "features": [          {
+            "type": "Feature",
+            "properties": {
+               "key": "id_5543",
+                "id": 5543,
+                "social": 10
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.139292696886635,
+                    45.47400069983043
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+               "key": "id_5551",
+                "id": 5551,
+                "social": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.163344984169463,
+                    45.47396883767099
+                ]
+            }
+        }]
+        };
+         var tweetData2 = {
+    "time": "1365581699000",
+    "type": "FeatureCollection",
+    "features": [          {
+            "type": "Feature",
+            "properties": {
+              "key": "id_5250",
+                "id": 5250,
+                "social": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.160320458511931,
+                    45.46762728905458
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+              "key": "id_5254",
+                "id": 5254,
+                "social": 3
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    9.172345239578519,
+                    45.46760977917576
+                ]
+            }
+        }
+        ]
+        }
+
+        //chartTweet.datum(tweetData1).call(tweet)
+        $timeout(function(){
+         // chartTweet.datum(tweetData2).call(tweet)
+        },6000)
 
         scope.$watch('bikemiJson', function(newValue, oldValue){
           if(newValue != oldValue){
@@ -69,7 +143,7 @@ angular.module('ccfs14.directives', [])
 
         scope.$watch('tweetJson', function(newValue, oldValue){
           if(newValue != oldValue){
-            //chartTweet.datum(newValue).call(tweet)
+            chartTweet.datum(newValue).call(tweet)
           }
         })
 
