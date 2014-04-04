@@ -25,6 +25,9 @@ config(['$routeProvider', function($routeProvider) {
       stacked : function (fileService) {
         return fileService.getFile('data/stackedtest.json')
       }, 
+      biketimeline : function (fileService) {
+        return fileService.getFile('data/biketimeline.json')
+      }
     }
   });
   $routeProvider.when('/geodistrict/:district', {
@@ -39,7 +42,7 @@ config(['$routeProvider', function($routeProvider) {
       }, 
       stacked : function (fileService) {
         return fileService.getFile('data/stackedtest.json')
-      }, 
+      }
     }
   });
   $routeProvider.when('/usernet', {

@@ -35,7 +35,6 @@
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         }
 
-
         var x = d3.time.scale()
             .range([0, chartWidth]);
 

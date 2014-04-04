@@ -3,7 +3,7 @@
 /* Controllers */
 
 angular.module('ccfs14.controllers', [])
-  .controller('geocity', function($scope, $window, fileService, ccfsSocket, district, mask, stacked) {
+  .controller('geocity', function($scope, $window, fileService, ccfsSocket, district, mask, stacked, biketimeline, biketimelineFilter) {
 
     $scope.date = new Date();
     
@@ -12,13 +12,16 @@ angular.module('ccfs14.controllers', [])
       city: "Milano"
     }
 
-    $scope.bikemiUrl = "data/bikemi.json";
-    $scope.bikemiJson;
+    $scope.biketimeline = biketimelineFilter(biketimeline);
     $scope.districtJson = district;
     $scope.maskJson = mask;
 
     ccfsSocket.on('twitter', function(data) {
       $scope.tweetJson = data
+    });
+
+    ccfsSocket.on('stalls', function(data) {
+      $scope.bikemiJson = data
     });
 
   })

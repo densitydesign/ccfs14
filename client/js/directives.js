@@ -28,13 +28,6 @@ angular.module('ccfs14.directives', [])
 
         var chartMap = d3.select(element[0]).call(map)
 
-        // var bikemi = ccfs.bikemi()
-        //             .width(width)
-        //             .height(height)
-        //             .projection(projection)
-
-        // var chartBikemi = d3.select(element[0])
-
         var district = ccfs.district()
                     .width(width)
                     .height(height)
@@ -60,84 +53,16 @@ angular.module('ccfs14.directives', [])
 
         var chartTweet = d3.select(element[0])
 
-         var tweetData1 = {
-    "time": "1365581699000",
-    "type": "FeatureCollection",
-    "features": [          {
-            "type": "Feature",
-            "properties": {
-               "key": "id_5543",
-                "id": 5543,
-                "social": 10
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    9.139292696886635,
-                    45.47400069983043
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-               "key": "id_5551",
-                "id": 5551,
-                "social": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    9.163344984169463,
-                    45.47396883767099
-                ]
-            }
-        }]
-        };
-         var tweetData2 = {
-    "time": "1365581699000",
-    "type": "FeatureCollection",
-    "features": [          {
-            "type": "Feature",
-            "properties": {
-              "key": "id_5250",
-                "id": 5250,
-                "social": 1
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    9.160320458511931,
-                    45.46762728905458
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-              "key": "id_5254",
-                "id": 5254,
-                "social": 3
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    9.172345239578519,
-                    45.46760977917576
-                ]
-            }
-        }
-        ]
-        }
+        var bikemi = ccfs.bikemi()
+                    .width(width)
+                    .height(height)
+                    .projection(projection)
 
-        //chartTweet.datum(tweetData1).call(tweet)
-        $timeout(function(){
-         // chartTweet.datum(tweetData2).call(tweet)
-        },6000)
+        var chartBikemi = d3.select(element[0])
 
         scope.$watch('bikemiJson', function(newValue, oldValue){
           if(newValue != oldValue){
-
+            chartBikemi.datum(newValue).call(bikemi)
           }
         })
 
@@ -248,17 +173,9 @@ angular.module('ccfs14.directives', [])
 
               chartCall.datum(data).call(stackedCall)
 
-              var stackedBike = ccfs.stackedArea()
-                          .width(element.find("#timeline-bike").width())
-                          .height(element.find("#timeline-bike").height())
-                          .stackColors(["#FFE100","#FFE100"])
-
-              var chartBike = d3.select(element.find("#timeline-bike")[0])
-
-              chartBike.datum(data).call(stackedBike)
 
               $timeout(function() {
-                    chartBike.call(stackedBike.brushDate(1120104000000))
+                    //chartBike.call(stackedBike.brushDate(1120104000000))
                     chartCall.call(stackedCall.brushDate(1120104000000))
                     chartTweet.call(stackedTweet.brushDate(1120104000000))
               }, 5000);
@@ -268,6 +185,15 @@ angular.module('ccfs14.directives', [])
 
             }
           );
+
+          var stackedBike = ccfs.stackedArea()
+                      .width(element.find("#timeline-bike").width())
+                      .height(element.find("#timeline-bike").height())
+                      .stackColors(["#FFE100","#FFE100"])
+
+          var chartBike = d3.select(element.find("#timeline-bike")[0])
+
+          chartBike.datum(scope.biketimeline).call(stackedBike)
       }
     }
   }])
