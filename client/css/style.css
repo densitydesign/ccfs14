@@ -95,6 +95,12 @@ body{
   font-size: 0.8em;
 }
 
+#bar-container {
+  position: fixed;
+  top: 20px;
+  height: 450px;
+}
+
 .axis path,
 .axis line {
   fill: none;
