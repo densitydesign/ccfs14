@@ -59,7 +59,6 @@
           .append("path")
           .attr("class", "tweet")
           .attr("d", path.pointRadius(0))
-          //.attr("d", path.pointRadius(function(d){return Math.sqrt((radiusScale(d.properties.social)/Math.PI))}))
           .attr("fill", "none")
           .attr("stroke", "#0EA789")
           .attr("stroke-opacity", 1)
@@ -73,6 +72,7 @@
           .exit()
           .transition()
           .duration(duration*Math.random())
+          .attr("d", path.pointRadius(0))
           .attr("stroke-opacity", 0)
           .remove()
           
