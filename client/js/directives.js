@@ -155,29 +155,12 @@ angular.module('ccfs14.directives', [])
         fileService.getFile('data/stackedtest.json').then(
             function(data){
 
-              var stackedTweet = ccfs.stackedArea()
-                                        .width(element.find("#timeline-tweet").width())
-                                        .height(element.find("#timeline-tweet").height())
-                                        .stackColors(["#0EA789", "#0EA789"])
-
-              var chartTweet = d3.select(element.find("#timeline-tweet")[0])
-
-              chartTweet.datum(data).call(stackedTweet)
-
-              var stackedCall = ccfs.stackedArea()
-                          .width(element.find("#timeline-call").width())
-                          .height(element.find("#timeline-call").height())
-                          .stackColors(["#fff","#fff"])
-
-              var chartCall = d3.select(element.find("#timeline-call")[0])
-
-              chartCall.datum(data).call(stackedCall)
 
 
               $timeout(function() {
                     //chartBike.call(stackedBike.brushDate(1120104000000))
-                    chartCall.call(stackedCall.brushDate(1120104000000))
-                    chartTweet.call(stackedTweet.brushDate(1120104000000))
+                    //chartCall.call(stackedCall.brushDate(1120104000000))
+                    //chartTweet.call(stackedTweet.brushDate(1120104000000))
               }, 5000);
               
             },
@@ -194,6 +177,34 @@ angular.module('ccfs14.directives', [])
           var chartBike = d3.select(element.find("#timeline-bike")[0])
 
           chartBike.datum(scope.biketimeline).call(stackedBike)
+
+          var stackedTweet = ccfs.stackedArea()
+                                    .width(element.find("#timeline-tweet").width())
+                                    .height(element.find("#timeline-tweet").height())
+                                    .stackColors(["#0EA789", "#0EA789"])
+
+          var chartTweet = d3.select(element.find("#timeline-tweet")[0])
+
+          chartTweet.datum(scope.socialtimeline).call(stackedTweet)
+
+          var stackedCall = ccfs.stackedArea()
+                      .width(element.find("#timeline-call").width())
+                      .height(element.find("#timeline-call").height())
+                      .stackColors(["#fff","#fff"])
+
+          var chartCall = d3.select(element.find("#timeline-call")[0])
+
+          chartCall.datum(scope.calltimeline).call(stackedCall)
+
+          scope.$watch('date', function(newValue, oldValue){
+            if(newValue != oldValue){
+
+              chartCall.call(stackedCall.brushDate(newValue))
+              chartTweet.call(stackedTweet.brushDate(newValue))
+
+            }
+          })
+
       }
     }
   }])
@@ -233,17 +244,18 @@ angular.module('ccfs14.directives', [])
       replace: true,
       templateUrl: 'partials/infocontainer.html',
       link: function(scope, element, attrs) {
-        var container = d3.select(element.find('.content')[0])
+        var container = d3.select(element.find('.content')[0]),
+            date = new Date(scope.date)
 
         container.append('h2')
           .attr("class", "opacity80")
           .text(scope.info.title.toUpperCase())
 
         container.append('p')
-          .text(scope.date.getDate() + " " + monthsIT(scope.date.getMonth()) + " " + scope.date.getFullYear())
+          .text(date.getDate() + " " + monthsIT(date.getMonth()) + " " + date.getFullYear())
 
         container.append('h1')
-          .html("<span class='opacity80'>h </span>" + (scope.date.getHours()<10?'0':'') + scope.date.getHours() + "<span class='opacity80'>:</span>" + (scope.date.getMinutes()<10?'0':'') + scope.date.getMinutes())
+          .html("<span class='opacity80'>h </span>" + (date.getHours()<10?'0':'') + date.getHours() + "<span class='opacity80'>:</span>" + (date.getMinutes()<10?'0':'') + date.getMinutes())
 
         container.append('span')
           .attr("class", "box")
@@ -251,8 +263,9 @@ angular.module('ccfs14.directives', [])
 
         scope.$watch('date', function(newValue, oldValue){
           if(newValue != oldValue){
+            var date = new Date(newValue)
             container.select('h1')
-              .html("<span class='opacity80'>h </span>" + (newValue.getHours()<10?'0':'') + newValue.getHours() + "<span class='opacity80'>:</span>" + (newValue.getMinutes()<10?'0':'') + newValue.getMinutes())
+              .html("<span class='opacity80'>h </span>" + (date.getHours()<10?'0':'') + date.getHours() + "<span class='opacity80'>:</span>" + (date.getMinutes()<10?'0':'') + date.getMinutes())
           }
         })
 

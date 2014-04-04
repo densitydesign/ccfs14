@@ -27,6 +27,9 @@ config(['$routeProvider', function($routeProvider) {
       }, 
       biketimeline : function (fileService) {
         return fileService.getFile('data/biketimeline.json')
+      },
+      callsocialtimeline : function (fileService) {
+        return fileService.getFile('data/callsocialtimeline.json')
       }
     }
   });

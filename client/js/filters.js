@@ -57,5 +57,21 @@ angular.module('ccfs14.filters', [])
       return timeline
     }
   })
+  .filter('callsocialtimeline', function() {
+    var timelines = [
+      [{"key": "amount of calls", values : []}],
+      [{"key": "amount of tweets", values : []}]
+    ]
+    return function(data) {
+        data.steps.sort(function(a, b) { return d3.descending(a.start, b.start); })
+        data.steps.forEach(function(d){
+          timelines[0][0].values.push({date:d.start, value: d.mobily_activity})
+          timelines[1][0].values.push({date:d.start, value: d.social_activity})
+
+        })
+
+      return timelines
+    }
+  })
 
 

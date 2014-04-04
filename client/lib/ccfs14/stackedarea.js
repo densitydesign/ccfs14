@@ -8,6 +8,7 @@
         width = 600,
         stackColors = ["#0EA789", "#0EA789"],
         brushDate,
+        duration = 2000,
         dispatch = d3.dispatch("clicked");
 
 
@@ -15,7 +16,7 @@
       selection.each(function(data){
 
         var chart;
-        var margin = {top: 10, right: 20, bottom: 40, left: 30},
+        var margin = {top: 10, right: 20, bottom: 40, left: 40},
             chartWidth = width - margin.left - margin.right,
             chartHeight = height - margin.top - margin.bottom;
 
@@ -67,7 +68,15 @@
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
-            .tickValues([0, yStackMax]);
+            .tickValues([0, yStackMax])
+            .tickFormat(function(d){
+              var format = d3.format('0.2s')
+              if(d == 0) 
+                return 0
+              else 
+                return format(d)
+            })
+
 
         var stacked = chart.selectAll(".stack")
                       .data(layers)
@@ -84,6 +93,7 @@
 
         fakeBrush
           .transition()
+          .duration(duration)
           .attr("width", chartWidth - x(new Date(brushDate)))
           .attr("x", x(new Date(brushDate)))
 
@@ -168,6 +178,12 @@
   stackedArea.brushDate = function(x){
     if (!arguments.length) return brushDate;
     brushDate = x;
+    return stackedArea;
+  }
+
+  stackedArea.duration = function(x){
+    if (!arguments.length) return duration;
+    duration = x;
     return stackedArea;
   }
 
