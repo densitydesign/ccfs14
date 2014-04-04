@@ -11,6 +11,7 @@ var data_url="../sample_data/"
 var map_url=data_url+"map/"
 var bike_tl_url=data_url+"Bike/BikeTimeline/"
 var bike_stall_url=data_url+"Bike/Stalls/"
+var users_url=data_url+"UsersSa/"
 var centroids;
 
 fs.readFile(data_url+"centroid_django.json", 'utf8', function (err, data) {
@@ -46,6 +47,7 @@ function structureData(folder) {
 var districts=structureData(map_url)
 var bike_timeline=structureData(bike_tl_url)
 var bike_stalls=structureData(bike_stall_url)
+var users=structureData(users_url)
 
 
 
@@ -66,7 +68,8 @@ io.sockets.on('connection', function (socket) {
 		emitStalls(inc,socket)
 		//all districts
 		emitDistricts(inc, socket)
-
+		//all networks
+		emitUsers(inc,socket)
 		
 	}
 	var run = setInterval(sendData, 2000);
@@ -150,3 +153,39 @@ function emitDistricts(i,socket) {
 		});
 	})
 }
+
+
+function emitUsers(i,socket) {
+	
+	var filtUsr=_.pairs(_.pick(users,['general','Brera','Tortona','Lambrate','PRomana']))
+	filtUsr.forEach(function(d,j) {
+		
+		var val=i%d[1].length;
+		
+		console.log(d[0],d[1][val])
+
+		var data;
+		var file_url;
+
+		if(d[0]==='general') file_url=users_url+d[1][val]
+		else file_url=users_url+d[0]+"/"+d[1][val]
+
+		fs.readFile(file_url, 'utf8', function (err, data) {
+		  if (err) {
+		    console.log('Error: ' + err);
+		    return;
+		  }
+		 try {
+		  	data = JSON.parse(data);
+			}
+		  catch (e) {
+			  // An error has occured, handle it, by e.g. logging it
+			  console.log(e);
+			  data={"error":e}
+			}
+		  data.time=d[1][val].replace(/\.[^/.]+$/, "")
+		  socket.emit("net-"+d[0],data)
+		});
+	})
+}
+
