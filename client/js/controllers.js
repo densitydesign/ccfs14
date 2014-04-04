@@ -78,6 +78,9 @@ angular.module('ccfs14.controllers', [])
       district: $routeParams.district.replace("_", " ")
     }
 
+    ccfsSocket.on('net-'+$scope.info.district, function(data) {
+      $scope.netJson = data
+    });
     //$scope.bikemiUrl = "data/bikemi.json";
     //$scope.bikemiJson;
     //$scope.districtJson = districtCellFilter($scope.info.districtId, district)
