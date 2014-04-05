@@ -4,6 +4,7 @@
 // Declare app level module which depends on filters, and services
 angular.module('ccfs14', [
   'ngRoute',
+  'ngAnimate',
   'ui.bootstrap',
   'ccfs14.filters',
   'ccfs14.services',

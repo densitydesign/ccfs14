@@ -37,7 +37,7 @@ angular.module('ccfs14.filters', [])
         var geojson = {"type": "FeatureCollection","features": []}
         data.features.forEach(function(d){
             if(d.properties.id == area)
-              geojson..features.push(d)
+              geojson.features.push(d)
           })
       return geojson
     }
