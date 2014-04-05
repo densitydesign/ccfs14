@@ -21,10 +21,7 @@ config(['$routeProvider', function($routeProvider) {
       },
       mask : function (fileService) {
         return fileService.getFile('data/mask.json')
-      }, 
-      stacked : function (fileService) {
-        return fileService.getFile('data/stackedtest.json')
-      }, 
+      },
       biketimeline : function (fileService) {
         return fileService.getFile('data/biketimeline.json')
       },
@@ -43,8 +40,9 @@ config(['$routeProvider', function($routeProvider) {
       mask : function (fileService) {
         return fileService.getFile('data/mask.json')
       }, 
-      stacked : function (fileService) {
-        return fileService.getFile('data/stackedtest.json')
+      callsocialtimeline : function ($route, fileService) {
+        var district = $route.current.params.district;
+        return fileService.getFile('data/' + district + '/callsocialtimeline.json')
       }
     }
   });

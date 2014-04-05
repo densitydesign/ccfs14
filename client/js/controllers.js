@@ -3,14 +3,15 @@
 /* Controllers */
 
 angular.module('ccfs14.controllers', [])
-  .controller('geocity', function($scope, $window, fileService, ccfsSocket, district, mask, stacked, biketimeline, biketimelineFilter, callsocialtimeline, callsocialtimelineFilter) {
+  .controller('geocity', function($scope, $window, fileService, ccfsSocket, district, mask, biketimeline, biketimelineFilter, callsocialtimeline, callsocialtimelineFilter) {
 
-    $scope.date = 1365580799000;
-    
     $scope.info = {
       title: "citysensing",
-      city: "Milano"
+      city: "Milano",
+      startDate: 1365580799000
     }
+
+    $scope.date = $scope.info.startDate;
 
     $scope.calltimeline = callsocialtimelineFilter(callsocialtimeline)[0];
     $scope.socialtimeline = callsocialtimelineFilter(callsocialtimeline)[1];
@@ -32,21 +33,33 @@ angular.module('ccfs14.controllers', [])
     });
 
   })
-  .controller('geodistrict', function($scope, $window, $routeParams, fileService, district, mask, stacked, districtCellFilter, districtMaskFilter) {
+  .controller('geodistrict', function($scope, $window, $routeParams, fileService, ccfsSocket, mask, district, districtCellFilter, districtMaskFilter, callsocialtimeline, callsocialtimelineFilter) {
 
-    $scope.date = new Date();
-    
     $scope.info = {
       title: "citysensing",
       city: "Milano",
       districtId: $routeParams.district,
-      district: $routeParams.district.replace("_", " ")
+      district: $routeParams.district.replace("_", " "),
+      startDate: 1365580799000
     }
-
-    $scope.bikemiUrl = "data/bikemi.json";
-    $scope.bikemiJson;
+    
+    $scope.date = $scope.info.startDate;
+    $scope.socialtimeline = callsocialtimelineFilter(callsocialtimeline)[1];
     $scope.districtJson = districtCellFilter($scope.info.districtId, district)
     $scope.maskJson = districtMaskFilter($scope.info.districtId, mask)
+
+    ccfsSocket.on('twitter', function(data) {
+      $scope.date = parseInt(data.time);
+      $scope.tweetJson = districtCellFilter($scope.info.districtId, data)
+    });
+
+    ccfsSocket.on('stalls', function(data) {
+      $scope.bikemiJson = data
+    });
+
+    ccfsSocket.on('districts', function(data) {
+      $scope.districtJson = districtCellFilter($scope.info.districtId, data)
+    });
 
   
   })

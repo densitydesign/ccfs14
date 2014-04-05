@@ -105,13 +105,6 @@ angular.module('ccfs14.directives', [])
 
         var chartMap = d3.select(element[0]).call(map)
 
-        // var bikemi = ccfs.bikemi()
-        //             .width(width)
-        //             .height(height)
-        //             .projection(projection)
-
-        // var chartBikemi = d3.select(element[0])
-
         var district = ccfs.district()
                     .width(width)
                     .height(height)
@@ -130,21 +123,37 @@ angular.module('ccfs14.directives', [])
 
         chartMask.datum(scope.maskJson).call(mask.projection(projection))
 
+        var tweet = ccfs.tweet()
+                    .width(width)
+                    .height(height)
+                    .minRadius(5)
+                    .maxRadius(50)
+                    .projection(projection)
+
+        var chartTweet = d3.select(element[0])
+
+        var bikemi = ccfs.bikemi()
+                    .width(width)
+                    .height(height)
+                    .projection(projection)
+
+        var chartBikemi = d3.select(element[0])
+
         scope.$watch('bikemiJson', function(newValue, oldValue){
           if(newValue != oldValue){
-
+            chartBikemi.datum(newValue).call(bikemi)
           }
         })
 
         scope.$watch('districtJson', function(newValue, oldValue){
           if(newValue != oldValue){
-
+            chartDistrict.datum(newValue).call(district)
           }
         })
 
-        scope.$watch('maskJson', function(newValue, oldValue){
+        scope.$watch('tweetJson', function(newValue, oldValue){
           if(newValue != oldValue){
-
+            chartTweet.datum(newValue).call(tweet)
           }
         })
 
@@ -203,25 +212,56 @@ angular.module('ccfs14.directives', [])
       replace: true,
       templateUrl: 'partials/timelinedistrict.html',
       link: function(scope, element, attrs) {
-        fileService.getFile('data/stackedtest.json').then(
+
+            var stackedTweet = ccfs.stackedArea()
+                                      .width(element.find("#timeline-tweet").width())
+                                      .height(element.find("#timeline-tweet").height())
+                                      .stackColors(["#0EA789", "#0EA789"])
+
+            var chartTweet = d3.select(element.find("#timeline-tweet")[0])
+
+            chartTweet.datum(scope.socialtimeline).call(stackedTweet)
+
+            scope.$watch('date', function(newValue, oldValue){
+              if(newValue != oldValue){
+                chartTweet.call(stackedTweet.brushDate(newValue))
+              }
+            })
+              
+      }
+    }
+  }])
+.directive('barchartDistrict',[ 'fileService', '$timeout', function (fileService, $timeout){
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'partials/barcontainer.html',
+      link: function(scope, element, attrs) {
+        fileService.getFile('data/testvenues.json').then(
             function(data){
 
-              var stackedTweet = ccfs.stackedArea()
-                                        .width(element.find("#timeline-tweet").width())
-                                        .height(element.find("#timeline-tweet").height())
-                                        .stackColors(["#0EA789", "#0EA789"])
+              //Funzione che appende il grafico
+              var barVenue = ccfs.barChart()
+                                        .width(element.find(".content").width())
+                                        .height(element.find(".content").height())
+                                        //.stackColors(["#0EA789", "#0EA789"])
 
-              var chartTweet = d3.select(element.find("#timeline-tweet")[0])
+              // console.log(element.find(".content").width());
+              // console.log(element.find(".content").height());
 
-              chartTweet.datum(data).call(stackedTweet)
+              //Elemento a cui lego i dati e ci metto la vis
+              var barVenueCont = d3.select(element.find(".content")[0])
 
-              $timeout(function() {
-                    chartTweet.call(stackedTweet.brushDate(1120104000000))
-              }, 5000);
+              barVenueCont.datum(data.venues).call(barVenue)
+
+              // //funzione che refresha i dati ogni 5 sec
+              // $timeout(function() {
+              //       barVenueCont.call(barVenue.brushDate(1120104000000))
+              // }, 5000);
               
             },
             function(error){
-
+              //chiamata quando ci sono errori nella lettura dei file  dei dati
             }
           );
       }
@@ -339,43 +379,6 @@ angular.module('ccfs14.directives', [])
           }
         })
 
-      }
-    }
-  }])
-
-.directive('barchartVenues',[ 'fileService', '$timeout', function (fileService, $timeout){
-    return {
-      restrict: 'A',
-      replace: true,
-      templateUrl: 'partials/barcontainer.html',
-      link: function(scope, element, attrs) {
-        fileService.getFile('data/testvenues.json').then(
-            function(data){
-
-              //Funzione che appende il grafico
-              var barVenue = ccfs.barChart()
-                                        .width(element.find(".content").width())
-                                        .height(element.find(".content").height())
-                                        //.stackColors(["#0EA789", "#0EA789"])
-
-              // console.log(element.find(".content").width());
-              // console.log(element.find(".content").height());
-
-              //Elemento a cui lego i dati e ci metto la vis
-              var barVenueCont = d3.select(element.find(".content")[0])
-
-              barVenueCont.datum(data.venues).call(barVenue)
-
-              // //funzione che refresha i dati ogni 5 sec
-              // $timeout(function() {
-              //       barVenueCont.call(barVenue.brushDate(1120104000000))
-              // }, 5000);
-              
-            },
-            function(error){
-              //chiamata quando ci sono errori nella lettura dei file  dei dati
-            }
-          );
       }
     }
   }])
