@@ -58,6 +58,7 @@ angular.module('ccfs14.controllers', [])
     }
     
     ccfsSocket.on('net-general', function(data) {
+      $scope.date = parseInt(data.time);
       $scope.netJson = data
     });
 
@@ -79,6 +80,7 @@ angular.module('ccfs14.controllers', [])
     }
 
     ccfsSocket.on('net-'+$scope.info.district, function(data) {
+      $scope.date = parseInt(data.time);
       $scope.netJson = data
     });
     //$scope.bikemiUrl = "data/bikemi.json";
