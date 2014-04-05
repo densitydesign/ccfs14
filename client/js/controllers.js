@@ -27,8 +27,6 @@ angular.module('ccfs14.controllers', [])
       $scope.bikemiJson = data
     });
 
-    console.log(new Date(1365580799000), new Date($scope.calltimeline[0].values[0].date), new Date($scope.socialtimeline[0].values[0].date), new Date($scope.biketimeline[0].values[0].date))
-
   })
   .controller('geodistrict', function($scope, $window, $routeParams, fileService, district, mask, stacked, districtCellFilter, districtMaskFilter) {
 
@@ -62,11 +60,6 @@ angular.module('ccfs14.controllers', [])
       $scope.netJson = data
     });
 
-    //$scope.bikemiUrl = "data/bikemi.json";
-    //$scope.bikemiJson;
-    //$scope.districtJson = districtCellFilter($scope.info.districtId, district)
-    //$scope.maskJson = districtMaskFilter($scope.info.districtId, mask)
-
   })
    .controller('netdistrict', function($scope, $window, $routeParams, fileService, ccfsSocket, district, mask, stacked, districtCellFilter, districtMaskFilter) {
 
@@ -83,9 +76,5 @@ angular.module('ccfs14.controllers', [])
       $scope.date = parseInt(data.time);
       $scope.netJson = data
     });
-    //$scope.bikemiUrl = "data/bikemi.json";
-    //$scope.bikemiJson;
-    //$scope.districtJson = districtCellFilter($scope.info.districtId, district)
-    //$scope.maskJson = districtMaskFilter($scope.info.districtId, mask)
 
   })

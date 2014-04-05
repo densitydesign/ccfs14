@@ -152,22 +152,6 @@ angular.module('ccfs14.directives', [])
       replace: true,
       templateUrl: 'partials/timelinecity.html',
       link: function(scope, element, attrs) {
-        fileService.getFile('data/stackedtest.json').then(
-            function(data){
-
-
-
-              $timeout(function() {
-                    //chartBike.call(stackedBike.brushDate(1120104000000))
-                    //chartCall.call(stackedCall.brushDate(1120104000000))
-                    //chartTweet.call(stackedTweet.brushDate(1120104000000))
-              }, 5000);
-              
-            },
-            function(error){
-
-            }
-          );
 
           var stackedBike = ccfs.stackedArea()
                       .width(element.find("#timeline-bike").width())
@@ -245,8 +229,9 @@ angular.module('ccfs14.directives', [])
       templateUrl: 'partials/infocontainer.html',
       link: function(scope, element, attrs) {
         var container = d3.select(element.find('.content')[0]),
-            date = new Date(scope.date)
+            date = d3.time.minute.round(new Date(scope.date)) //rounded because of ugly intervals
 
+       
         container.append('h2')
           .attr("class", "opacity80")
           .text(scope.info.title.toUpperCase())
@@ -254,8 +239,14 @@ angular.module('ccfs14.directives', [])
         container.append('p')
           .text(date.getDate() + " " + monthsIT(date.getMonth()) + " " + date.getFullYear())
 
+        
         container.append('h1')
-          .html("<span class='opacity80'>h </span>" + (date.getHours()<10?'0':'') + date.getHours() + "<span class='opacity80'>:</span>" + (date.getMinutes()<10?'0':'') + date.getMinutes())
+          .html("<span class='opacity80'>h </span><span id='time-hours'>" 
+                + (date.getHours()<10?'0':'') + date.getHours() + 
+                "</span><span class='opacity80'>:</span><span id='time-minutes'>" 
+                + (date.getMinutes()<10?'0':'') + date.getMinutes() + 
+                "</span>")
+
 
         container.append('span')
           .attr("class", "box")
@@ -263,9 +254,28 @@ angular.module('ccfs14.directives', [])
 
         scope.$watch('date', function(newValue, oldValue){
           if(newValue != oldValue){
-            var date = new Date(newValue)
-            container.select('h1')
-              .html("<span class='opacity80'>h </span>" + (date.getHours()<10?'0':'') + date.getHours() + "<span class='opacity80'>:</span>" + (date.getMinutes()<10?'0':'') + date.getMinutes())
+            var date = d3.time.minute.round(new Date(newValue))
+            
+            container.select("#time-hours")
+              .transition()
+              .delay(2000)
+              .text(function(d){ return (date.getHours()<10?'0':'') + date.getHours()})
+
+            container.select("#time-minutes")
+              .transition()
+              .duration(2000)
+              .tween("text", function() {
+                var val = date.getMinutes() || 59;
+                var i = d3.interpolateNumber(parseInt(this.textContent), val);
+                return function(t) {
+                  this.textContent = (i(t)<10?'0':'') + Math.round(i(t));
+                };
+              })
+              .each("end", function(){
+                if(this.textContent == '59')
+                  return this.textContent = '00'
+              });
+
           }
         })
 
