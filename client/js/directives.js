@@ -72,6 +72,11 @@ angular.module('ccfs14.directives', [])
           }
         })
 
+        scope.$watch('districtJson', function(newValue, oldValue){
+          if(newValue != oldValue){
+            chartDistrict.datum(newValue).call(district)
+          }
+        })
       }
     }
   }])
@@ -266,9 +271,9 @@ angular.module('ccfs14.directives', [])
               .duration(2000)
               .tween("text", function() {
                 var val = date.getMinutes() || 59;
-                var i = d3.interpolateNumber(parseInt(this.textContent), val);
+                var i = d3.interpolateRound(parseInt(this.textContent), val);
                 return function(t) {
-                  this.textContent = (i(t)<10?'0':'') + Math.round(i(t));
+                  this.textContent = (i(t)<10?'0':'') + i(t);
                 };
               })
               .each("end", function(){

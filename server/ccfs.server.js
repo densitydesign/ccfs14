@@ -172,26 +172,36 @@ function emitStalls(i, socket) {
 function emitDistricts(i,socket) {
 	var distr = _.omit(districts,'general');
 	var filtDistr=_.pairs(_.pick(distr,['Brera','Tortona','Lambrate','PRomana']))
+	var out = {"type": "FeatureCollection","features": []}
+	var counter = 0;
 	filtDistr.forEach(function(d,j) {
-		
-		console.log(i,d[1].length,i%d[1].length)
 		var val=i%d[1].length;
-		
 		var data;
-		
+
 		fs.readFile(map_url+d[0]+"/"+d[1][val], 'utf8', function (err, data) {
-		  if (err) {
-		    console.log('Error: ' + err);
-		    return;
-		  }
-		  data = JSON.parse(data);
-		var cells=data.cells
-		var res={"time":d[1][val].replace(/\.[^/.]+$/, ""),"type": "FeatureCollection","features": []}
+			if (err) {
+				console.log('Error: ' + err);
+				return;
+			}
+			data = JSON.parse(data);
+			var mobileDomain = data.cells.map(function(d){return d.mobily_activity})
+			var mobileRange = [0,100]
+			var cells=data.cells
+			//var res={"time":d[1][val].replace(/\.[^/.]+$/, ""),"type": "FeatureCollection","features": []}
+			var scaleValue = function (value) {
+					return mobileRange[0] + (((value - _.min(mobileDomain)) * (mobileRange[1] - mobileRange[0])) / (_.max(mobileDomain) - _.min(mobileDomain)))
+				}
 			cells.forEach(function(d,j){	
-					var obj={"type":"Feature","properties":{"id":d.id,"mobile":d.mobily_activity}}
-					res["features"].push(obj)
+				var obj={"type":"Feature","properties":{"id":d.id,"mobile":scaleValue(d.mobily_activity)}}
+				//res["features"].push(obj)
+				out["features"].push(obj)
 			})
-			socket.emit(d[0],res)
+			//socket.emit(d[0],res)
+			counter = counter + 1;
+			if(counter == filtDistr.length){
+				out["time"] = d[1][val].replace(/\.[^/.]+$/, "");
+				socket.emit("districts",out);
+			}
 		});
 	})
 }

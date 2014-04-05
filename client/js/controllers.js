@@ -27,6 +27,10 @@ angular.module('ccfs14.controllers', [])
       $scope.bikemiJson = data
     });
 
+    ccfsSocket.on('districts', function(data) {
+      $scope.districtJson = data
+    });
+
   })
   .controller('geodistrict', function($scope, $window, $routeParams, fileService, district, mask, stacked, districtCellFilter, districtMaskFilter) {
 
@@ -46,7 +50,7 @@ angular.module('ccfs14.controllers', [])
 
   
   })
-  .controller('usernet', function($scope, $window, $routeParams, fileService, ccfsSocket,district, mask, stacked, districtCellFilter, districtMaskFilter) {
+  .controller('usernet', function($scope, $window, $routeParams, fileService, ccfsSocket) {
 
     $scope.date = new Date();
     
@@ -61,7 +65,7 @@ angular.module('ccfs14.controllers', [])
     });
 
   })
-   .controller('netdistrict', function($scope, $window, $routeParams, fileService, ccfsSocket, district, mask, stacked, districtCellFilter, districtMaskFilter) {
+   .controller('netdistrict', function($scope, $window, $routeParams, fileService, ccfsSocket) {
 
     $scope.date = new Date();
     
