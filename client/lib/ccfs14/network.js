@@ -11,53 +11,15 @@
 
     function net(selection){
       selection.each(function(data){
-        
-      var toDelete=[];
-      graph.nodes.forEach(function(d,i){
-        found=false;
-        data.nodes.forEach(function(e,j){
-          if(d.id==e.id) {
-            if(d.socialActivity != e.socialActivity) {
-              d.socialActivity = e.socialActivity
-              d.act=true;
-            }
-            found=true;
-          }        
-        })  
-        if(!found) toDelete.push(d.id)
-      })
-
-
-      graph.nodes = graph.nodes.filter(function( obj ) {
-          return toDelete.indexOf(obj.id)<0;
-      });
-
-
-      data.nodes.forEach(function(d,j){
-        found=false;
-        graph.nodes.forEach(function(e,i){
-          if(d.id==e.id) { 
-            found=true;
-          }
-        })
-        if(!found) graph.nodes.push(d);
-      })      
-
-
-
-      graph.links=data.links
-      graph.links.forEach(function(d,i){
-          var src=graph.nodes.filter(function(e){return e.id==d.source})[0]
-          var tgt=graph.nodes.filter(function(e){return e.id==d.target})[0]
-          d.source=graph.nodes.indexOf(src);
-          d.target=graph.nodes.indexOf(tgt);
-      })
-
-
+      
+      console.log("before update data")
+      updateData()
+      console.log("after update data")
         var vis,force;
       
         
         if (selection.select('svg').empty()){
+        	console.log("append svg")
 	          vis = selection.append('svg')
 	          .attr('width', width)
 	          .attr('height', height)
@@ -65,6 +27,7 @@
         }
         else
         {
+        	console.log("svg is here")
           vis = selection.select('svg')
           .attr('width', width)
           .attr('height', height)
@@ -177,6 +140,53 @@
 		      node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 		     // if(force.alpha()<0.099) force.alpha(0.099)
 		    })
+		    
+		    
+		     function updateData() { 
+      var toDelete=[];
+      graph.nodes.forEach(function(d,i){
+        found=false;
+        data.nodes.forEach(function(e,j){
+          if(d.id==e.id) {
+            if(d.socialActivity != e.socialActivity) {
+              d.socialActivity = e.socialActivity
+              d.act=true;
+            }
+            found=true;
+          }        
+        })  
+        if(!found) toDelete.push(d.id)
+      })
+
+
+      graph.nodes = graph.nodes.filter(function( obj ) {
+          return toDelete.indexOf(obj.id)<0;
+      });
+
+
+      data.nodes.forEach(function(d,j){
+        found=false;
+        graph.nodes.forEach(function(e,i){
+          if(d.id==e.id) { 
+            found=true;
+          }
+        })
+        if(!found) graph.nodes.push(d);
+      })      
+
+
+
+      graph.links=data.links
+      graph.links.forEach(function(d,i){
+          var src=graph.nodes.filter(function(e){return e.id==d.source})[0]
+          var tgt=graph.nodes.filter(function(e){return e.id==d.target})[0]
+          d.source=graph.nodes.indexOf(src);
+          d.target=graph.nodes.indexOf(tgt);
+      })
+
+}
+		    
+		    
 
       }); //end selection
     } // end net
