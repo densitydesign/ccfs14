@@ -119,4 +119,16 @@ angular.module('ccfs14.filters', [])
       return geojson
     }
   })
+  .filter('mapDistrictUrl', function() {
+    return function(district) {
+        var mapDistrict = {
+          "brera": "Brera",
+          "tortona": "Tortona",
+          "lambrate": "Lambrate",
+          "porta_romana": "PRomana"
+        }
+        
+        return mapDistrict[district]
+    }
+  })
 

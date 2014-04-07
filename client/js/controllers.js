@@ -45,7 +45,7 @@ angular.module('ccfs14.controllers', [])
     };
 
   })
-  .controller('geodistrict', function($scope, $window, $location, $routeParams, fileService, ccfsSocket, mask, district, districtCellFilter, districtMaskFilter, callsocialtimeline, callsocialtimelineFilter, getPathFilter, venues, districtVenuesFilter) {
+  .controller('geodistrict', function($scope, $window, $location, $routeParams, fileService, ccfsSocket, mask, district, districtCellFilter, districtMaskFilter, callsocialtimeline, callsocialtimelineFilter, getPathFilter, venues, districtVenuesFilter, mapDistrictUrlFilter) {
 
     $scope.info = {
       title: "citysensing",
@@ -72,6 +72,10 @@ angular.module('ccfs14.controllers', [])
 
     ccfsSocket.on('districts', function(data) {
       $scope.districtJson = districtCellFilter($scope.info.districtId, data)
+    });
+
+    ccfsSocket.on('venue-'+ mapDistrictUrlFilter($scope.info.districtId), function(data) {
+      $scope.venuesTopJson = data
     });
 
     $scope.utils = {

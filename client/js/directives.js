@@ -245,35 +245,21 @@ angular.module('ccfs14.directives', [])
     return {
       restrict: 'A',
       replace: true,
+      disableCache: true,
       templateUrl: 'partials/barcontainer.html',
       link: function(scope, element, attrs) {
-        fileService.getFile('data/testvenues.json').then(
-            function(data){
 
-              //Funzione che appende il grafico
-              var barVenue = ccfs.barChart()
-                                        .width(element.find(".content").width())
-                                        .height(element.find(".content").height())
-                                        //.stackColors(["#0EA789", "#0EA789"])
+            var barVenue = ccfs.barChart()
+                              .width(element.find(".content").width())
+                              .height(element.find(".content").height())
+                                      
+            var barVenueCont = d3.select(element.find(".content")[0])
 
-              // console.log(element.find(".content").width());
-              // console.log(element.find(".content").height());
-
-              //Elemento a cui lego i dati e ci metto la vis
-              var barVenueCont = d3.select(element.find(".content")[0])
-
-              barVenueCont.datum(data.venues).call(barVenue)
-
-              // //funzione che refresha i dati ogni 5 sec
-              // $timeout(function() {
-              //       barVenueCont.call(barVenue.brushDate(1120104000000))
-              // }, 5000);
-              
-            },
-            function(error){
-              //chiamata quando ci sono errori nella lettura dei file  dei dati
-            }
-          );
+            scope.$watch('venuesTopJson', function(newValue, oldValue){
+              if(newValue != oldValue){
+                barVenueCont.datum(newValue.venues).call(barVenue)
+              }
+            })
       }
     }
   }])
