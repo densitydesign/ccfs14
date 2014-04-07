@@ -26,7 +26,6 @@
          }
 
         /*Bar chart title */
-
         var titleHeight = 45;
 
         if(chart.select(".bc-title").empty()){
@@ -83,6 +82,17 @@
           .attr("fill-opacity", 0.5)
 
         var arrows = chart.selectAll(".bararrow").data(data)
+
+        arrows
+          .transition()
+          .duration(duration)
+          .attr("d", function(d,i) { return "M"+x(d.socialActivity)
+            +" "+(((i*25)+(i*15))+titleHeight+15)+
+            " L"+(x(d.socialActivity)+arrowWidth)
+            +" "+((((i*25)+(i*15))+titleHeight+15)+(15/2))
+            +" L"+x(d.socialActivity)
+            +" "+((((i*25)+(i*15))+titleHeight+15)+(15))
+            +" Z" })
 
         arrows.enter().append("path")
           .attr("class", "bararrow")
