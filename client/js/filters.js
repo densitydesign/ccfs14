@@ -75,5 +75,60 @@ angular.module('ccfs14.filters', [])
       return timelines
     }
   })
+  .filter('getPath', function() {
+    return function(key, location) {
+      var path;
 
+      var keyMap ={
+        "66" : "brera",
+        "84" : "tortona",
+        "76" : "lambrate",
+        "80" : "porta_romana",
+        "78" : "/usernet",
+        "77" : "/geocity"
+      }
+
+      if(key == 77 || key == 78){
+        path = keyMap[String(key)]
+      }else{
+        if(location == "/geocity"){
+          path = "/geodistrict/" + keyMap[String(key)]
+        }
+        else if(location == "/usernet"){
+          path = "/netdistrict/" + keyMap[String(key)]
+        }
+        else{
+          path = location.split("/")[1] + "/" + keyMap[String(key)]
+        }
+      }
+
+      return path
+    }
+  })
+  .filter('districtVenues', function() {
+    return function(data) {
+        var geojson = {"type": "FeatureCollection","features": []}
+        data.venues.forEach(function(d){
+              
+              var feature = { "type": "Feature", 
+                "properties": {"id":d.id,"name":d.name,"address":d.address},
+                "geometry": { "type": "Point", "coordinates": [d.latitude, d.longitude]}
+              }
+              geojson.features.push(feature)
+          })
+      return geojson
+    }
+  })
+  .filter('mapDistrictUrl', function() {
+    return function(district) {
+        var mapDistrict = {
+          "brera": "Brera",
+          "tortona": "Tortona",
+          "lambrate": "Lambrate",
+          "porta_romana": "PRomana"
+        }
+        
+        return mapDistrict[district]
+    }
+  })
 

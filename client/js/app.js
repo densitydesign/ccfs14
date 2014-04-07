@@ -44,6 +44,10 @@ config(['$routeProvider', function($routeProvider) {
       callsocialtimeline : function ($route, fileService) {
         var district = $route.current.params.district;
         return fileService.getFile('data/' + district + '/callsocialtimeline.json')
+      }, 
+      venues : function ($route, fileService) {
+        var district = $route.current.params.district;
+        return fileService.getFile('data/' + district + '/venues.json')
       }
     }
   });

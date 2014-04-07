@@ -3,7 +3,7 @@
 /* Controllers */
 
 angular.module('ccfs14.controllers', [])
-  .controller('geocity', function($scope, $window, fileService, ccfsSocket, district, mask, biketimeline, biketimelineFilter, callsocialtimeline, callsocialtimelineFilter) {
+  .controller('geocity', function($scope, $window, $location, fileService, ccfsSocket, district, mask, biketimeline, biketimelineFilter, callsocialtimeline, callsocialtimelineFilter, getPathFilter) {
 
     $scope.info = {
       title: "citysensing",
@@ -32,8 +32,20 @@ angular.module('ccfs14.controllers', [])
       $scope.districtJson = data
     });
 
+    $scope.utils = {
+      keys : [66,84,76,80,78,77]
+    }
+
+    $scope.keyPress = function(e) {
+      var key = e.keyCode
+      if($scope.utils.keys.indexOf(key) > -1){
+        var currentLocation = $location.path();
+        $location.path(getPathFilter(key, currentLocation))
+      }
+    };
+
   })
-  .controller('geodistrict', function($scope, $window, $routeParams, fileService, ccfsSocket, mask, district, districtCellFilter, districtMaskFilter, callsocialtimeline, callsocialtimelineFilter) {
+  .controller('geodistrict', function($scope, $window, $location, $routeParams, fileService, ccfsSocket, mask, district, districtCellFilter, districtMaskFilter, callsocialtimeline, callsocialtimelineFilter, getPathFilter, venues, districtVenuesFilter, mapDistrictUrlFilter) {
 
     $scope.info = {
       title: "citysensing",
@@ -47,6 +59,7 @@ angular.module('ccfs14.controllers', [])
     $scope.socialtimeline = callsocialtimelineFilter(callsocialtimeline)[1];
     $scope.districtJson = districtCellFilter($scope.info.districtId, district)
     $scope.maskJson = districtMaskFilter($scope.info.districtId, mask)
+    $scope.venuesJson = districtVenuesFilter(venues)
 
     ccfsSocket.on('twitter', function(data) {
       $scope.date = parseInt(data.time);
@@ -61,9 +74,24 @@ angular.module('ccfs14.controllers', [])
       $scope.districtJson = districtCellFilter($scope.info.districtId, data)
     });
 
+    ccfsSocket.on('venue-'+ mapDistrictUrlFilter($scope.info.districtId), function(data) {
+      $scope.venuesTopJson = data
+    });
+
+    $scope.utils = {
+      keys : [66,84,76,80,78,77]
+    }
+
+    $scope.keyPress = function(e) {
+      var key = e.keyCode
+      if($scope.utils.keys.indexOf(key) > -1){
+        var currentLocation = $location.path();
+        $location.path(getPathFilter(key, currentLocation))
+      }
+    };
   
   })
-  .controller('usernet', function($scope, $window, $routeParams, fileService, ccfsSocket) {
+  .controller('usernet', function($scope, $window, $location, $routeParams, fileService, ccfsSocket, getPathFilter) {
 
     $scope.date = new Date();
     
@@ -77,8 +105,20 @@ angular.module('ccfs14.controllers', [])
       $scope.netJson = data
     });
 
+    $scope.utils = {
+      keys : [66,84,76,80,78,77]
+    }
+
+    $scope.keyPress = function(e) {
+      var key = e.keyCode
+      if($scope.utils.keys.indexOf(key) > -1){
+        var currentLocation = $location.path();
+        $location.path(getPathFilter(key, currentLocation))
+      }
+    };
+
   })
-   .controller('netdistrict', function($scope, $window, $routeParams, fileService, ccfsSocket) {
+   .controller('netdistrict', function($scope, $window, $location, $routeParams, fileService, ccfsSocket, getPathFilter) {
 
     $scope.date = new Date();
     
@@ -93,5 +133,17 @@ angular.module('ccfs14.controllers', [])
       $scope.date = parseInt(data.time);
       $scope.netJson = data
     });
+
+    $scope.utils = {
+      keys : [66,84,76,80,78,77]
+    }
+
+    $scope.keyPress = function(e) {
+      var key = e.keyCode
+      if($scope.utils.keys.indexOf(key) > -1){
+        var currentLocation = $location.path();
+        $location.path(getPathFilter(key, currentLocation))
+      }
+    };
 
   })

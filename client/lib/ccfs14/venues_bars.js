@@ -107,7 +107,7 @@
           .transition()
           .duration(duration)
           .tween("text", function(d) {
-                var i = d3.interpolateNumber(this.textContent, d.value);
+                var i = d3.interpolateNumber(this.textContent, d.socialActivity);
                 return function(t) {
                     this.textContent = Math.round(i(t));
                 };
