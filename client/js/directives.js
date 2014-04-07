@@ -245,13 +245,13 @@ angular.module('ccfs14.directives', [])
     return {
       restrict: 'A',
       replace: true,
-      disableCache: true,
       templateUrl: 'partials/barcontainer.html',
       link: function(scope, element, attrs) {
 
             var barVenue = ccfs.barChart()
                               .width(element.find(".content").width())
                               .height(element.find(".content").height())
+
                                       
             var barVenueCont = d3.select(element.find(".content")[0])
 
