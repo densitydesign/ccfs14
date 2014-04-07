@@ -42,7 +42,7 @@ new MBTiles(mbtilesLocation, function(err, mbtiles) {
 
 });
 
-var server = app.listen(8000);
+var server = app.listen(3002);
 var io = require('socket.io').listen(server);
 
 io.set('log level', 1);

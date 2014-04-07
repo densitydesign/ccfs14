@@ -121,7 +121,7 @@ angular.module('ccfs14.controllers', [])
     };
 
   })
-   .controller('netdistrict', function($scope, $window, $location, $routeParams, fileService, ccfsSocket, getPathFilter) {
+   .controller('netdistrict', function($scope, $window, $location, $routeParams, fileService, ccfsSocket, getPathFilter,mapDistrictUrlFilter) {
 
     
     
@@ -135,7 +135,7 @@ angular.module('ccfs14.controllers', [])
 	
 	$scope.date = $scope.info.startDate;
 	
-    ccfsSocket.on('net-'+$scope.info.district, function(data) {
+    ccfsSocket.on('net-'+mapDistrictUrlFilter($scope.info.districtId), function(data) {
       $scope.date = parseInt(data.time);
       $scope.netJson = data
     });
