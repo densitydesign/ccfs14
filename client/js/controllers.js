@@ -8,7 +8,8 @@ angular.module('ccfs14.controllers', [])
     $scope.info = {
       title: "citysensing",
       city: "Milano",
-      startDate: 1365580799000
+      //startDate: 1365580799000
+      startDate: 1396735199000
     }
 
     $scope.date = $scope.info.startDate;
@@ -52,7 +53,8 @@ angular.module('ccfs14.controllers', [])
       city: "Milano",
       districtId: $routeParams.district,
       district: $routeParams.district.replace("_", " "),
-      startDate: 1365580799000
+      //startDate: 1365580799000
+      startDate: 1396735199000
     }
     
     $scope.date = $scope.info.startDate;
@@ -98,7 +100,8 @@ angular.module('ccfs14.controllers', [])
     $scope.info = {
       title: "citysensing",
       city: "Milano",
-      startDate: 1365580799000
+      //startDate: 1365580799000
+      startDate: 1396735199000
     }
     
     $scope.date = $scope.info.startDate;
@@ -128,7 +131,8 @@ angular.module('ccfs14.controllers', [])
     $scope.info = {
       title: "citysensing",
       city: "Milano",
-      startDate: 1365580799000,
+      //startDate: 1365580799000
+      startDate: 1396735199000,
       districtId: $routeParams.district,
       district: $routeParams.district.replace("_", " ")
     }
