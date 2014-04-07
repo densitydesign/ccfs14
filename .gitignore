@@ -21,3 +21,4 @@ client/data/
 server/node_modules/
 tiles_server/node_modules/
 server/data
+sample_data/
