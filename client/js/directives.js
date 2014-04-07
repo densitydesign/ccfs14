@@ -11,6 +11,7 @@ angular.module('ccfs14.directives', [])
       templateUrl: 'partials/mapcontainer.html',
       link: function(scope, element, attrs) {
 
+
         var width = element.width(),
             height = element.height(),
             projection = d3.geo.mercator(),
@@ -122,6 +123,15 @@ angular.module('ccfs14.directives', [])
         var chartMask = d3.select(element[0])
 
         chartMask.datum(scope.maskJson).call(mask.projection(projection))
+
+        var venues = ccfs.venues()
+                    .width(width)
+                    .height(height)
+                    .projection(projection)
+
+        var chartVenues = d3.select(element[0])
+
+        chartVenues.datum(scope.venuesJson).call(venues.projection(projection))
 
         var tweet = ccfs.tweet()
                     .width(width)
