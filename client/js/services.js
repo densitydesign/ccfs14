@@ -21,7 +21,7 @@ angular.module('ccfs14.services', [])
    }
   })
   .factory('ccfsSocket', function (socketFactory) {
-    var ccfsIoSocket = io.connect('http://localhost:3002');
+    var ccfsIoSocket = io.connect('http://localhost:3333');
 
     var ccfsSocket = socketFactory({
       ioSocket: ccfsIoSocket
