@@ -112,7 +112,7 @@ angular.module('ccfs14.filters', [])
               
               var feature = { "type": "Feature", 
                 "properties": {"id":d.id,"name":d.name,"address":d.address},
-                "geometry": { "type": "Point", "coordinates": [d.latitude, d.longitude]}
+                "geometry": { "type": "Point", "coordinates": [d.longitude, d.latitude]}
               }
               geojson.features.push(feature)
           })

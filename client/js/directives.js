@@ -207,6 +207,7 @@ angular.module('ccfs14.directives', [])
           scope.$watch('date', function(newValue, oldValue){
             if(newValue != oldValue){
 
+              chartBike.call(stackedBike.brushDate(newValue))
               chartCall.call(stackedCall.brushDate(newValue))
               chartTweet.call(stackedTweet.brushDate(newValue))
 
