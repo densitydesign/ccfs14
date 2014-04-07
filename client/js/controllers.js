@@ -88,7 +88,7 @@ angular.module('ccfs14.controllers', [])
       districtId: $routeParams.district,
       district: $routeParams.district.replace("_", " ")
     }
-
+	
     ccfsSocket.on('net-'+$scope.info.district, function(data) {
       $scope.date = parseInt(data.time);
       $scope.netJson = data
