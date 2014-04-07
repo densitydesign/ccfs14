@@ -366,12 +366,12 @@ angular.module('ccfs14.directives', [])
                     
           //console.log(element.find("#net-container").width(), element.find("#net-container").height())
           
-        var chartNet = d3.select("#net-dist")
-
+        var chartNet = d3.select(element[0])
+		console.log(element)
            scope.$watch('netJson', function(newValue, oldValue){
           if(newValue != oldValue){
             
-            console.log(newValue)
+            console.log(newValue, chartNet)
             chartNet.datum(newValue).call(network)
 
           }

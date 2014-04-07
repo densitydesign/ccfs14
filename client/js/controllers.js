@@ -93,12 +93,15 @@ angular.module('ccfs14.controllers', [])
   })
   .controller('usernet', function($scope, $window, $location, $routeParams, fileService, ccfsSocket, getPathFilter) {
 
-    $scope.date = new Date();
+    
     
     $scope.info = {
       title: "citysensing",
       city: "Milano",
+      startDate: 1365580799000
     }
+    
+    $scope.date = $scope.info.startDate;
     
     ccfsSocket.on('net-general', function(data) {
       $scope.date = parseInt(data.time);
@@ -120,14 +123,17 @@ angular.module('ccfs14.controllers', [])
   })
    .controller('netdistrict', function($scope, $window, $location, $routeParams, fileService, ccfsSocket, getPathFilter) {
 
-    $scope.date = new Date();
+    
     
     $scope.info = {
       title: "citysensing",
       city: "Milano",
+      startDate: 1365580799000,
       districtId: $routeParams.district,
       district: $routeParams.district.replace("_", " ")
     }
+	
+	$scope.date = $scope.info.startDate;
 	
     ccfsSocket.on('net-'+$scope.info.district, function(data) {
       $scope.date = parseInt(data.time);
