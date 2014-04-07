@@ -95,10 +95,6 @@ var venuesSa = structureData(venuesSa_url)
 var venuesList={}		
 buildVenuesList(venuesTop, venuesList)
 
-console.log(venuesList['general'])
-
-
-
 
 //================
 //Emit events
@@ -286,9 +282,8 @@ function emitVenues(i,socket) {
 	filtVen.forEach(function(d, j) {
 		var res={}
 		var totVenues=_.map(venuesList[d[0]].venues, _.clone)
-		console.log(totVenues)
-		console.log("-------------------------")
 		var val = i % d[1].length;
+		console.log('$$$$$$'+val+" "+d[1].length+"$$$$$$$$")
 		var data;
 		var file_url;
 		
@@ -316,20 +311,21 @@ function emitVenues(i,socket) {
 			data.venues.forEach(function(e,k){
 				
 				var curr=totVenues.filter(function(r){return r.id===e.id})[0]
+				console.log(i,val+"%%%%%%")
+				console.log(curr.socialActivity,e.socialActivity)
 				curr.socialActivity=e.socialActivity
+				console.log(curr.socialActivity)
+				console.log("------------------")
 			})
 		
 			res.venues=totVenues;
-			
+			if (d[0] === 'general') {
+				console.log('#######')
+				console.log(totVenues)
+			}
 			socket.emit("venue-" + d[0], res)
 		});
-			
-		
-	
 		})
-		
-
-	
 }
 
 function buildVenuesList(vtop, vlist) {
@@ -350,7 +346,6 @@ function buildVenuesList(vtop, vlist) {
 					delete d.longitude
 					d.socialActivity = 0;
 				})
-				console.log("venue",v[0])
 				vlist[v[0]] = data
 				
 	})
