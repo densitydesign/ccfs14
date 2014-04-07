@@ -332,6 +332,7 @@ angular.module('ccfs14.directives', [])
     return {
       restrict: 'A',
       replace: true,
+      disableCache: true,
       templateUrl: 'partials/net-container.html',
       link: function(scope, element, attrs) {
         //var container = d3.select(element.find('.content')[0])
@@ -359,7 +360,8 @@ angular.module('ccfs14.directives', [])
     return {
       restrict: 'A',
       replace: true,
-      templateUrl: 'partials/net-container.html',
+      disableCache: true,
+      templateUrl: 'partials/net-container-dist.html',
       link: function(scope, element, attrs) {
         //var container = d3.select(element.find('.content')[0])
                     var network = ccfs.network()
@@ -368,7 +370,7 @@ angular.module('ccfs14.directives', [])
                     
           //console.log(element.find("#net-container").width(), element.find("#net-container").height())
           
-        var chartNet = d3.select("#net-container")
+        var chartNet = d3.select("#net-dist")
 
            scope.$watch('netJson', function(newValue, oldValue){
           if(newValue != oldValue){
