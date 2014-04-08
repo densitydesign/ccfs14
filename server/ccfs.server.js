@@ -13,7 +13,6 @@ new MBTiles(mbtilesLocation, function(err, mbtiles) {
 		throw err;
 	app.get('/tiles/:z/:x/:y.*', function(req, res) {
 		var extension = req.param(0);
-		console.log("entered here")
 		switch (extension) {
 			case "png": {
 				mbtiles.getTile(req.param('z'), req.param('x'), req.param('y'), function(err, tile, headers) {
@@ -45,7 +44,21 @@ new MBTiles(mbtilesLocation, function(err, mbtiles) {
 var server = app.listen(3333);
 var io = require('socket.io').listen(server);
 
-io.set('log level', 1);
+io.enable('browser client minification');  // send minified client
+io.enable('browser client etag');          // apply etag caching logic based on version number
+io.enable('browser client gzip');          // gzip the file
+io.set('log level', 1);                    // reduce logging
+
+// enable all transports (optional if you want flashsocket support, please note that some hosting
+// providers do not allow you to create servers that listen on a port different than 80 or their
+// default port)
+io.set('transports', [
+    'websocket'
+  , 'flashsocket'
+  , 'htmlfile'
+  , 'xhr-polling'
+  , 'jsonp-polling'
+]);
 
 var data_url = "../sample_data/"
 var map_url = data_url + "map/"
@@ -99,31 +112,60 @@ buildVenuesList(venuesTop, venuesList)
 //================
 //Emit events
 //================
-io.sockets.on('connection', function(socket) {
+//io.sockets.on('connection', function(socket) {
 
 	var inc = -1;
 
 	var sendData = function() {
 		inc++;
+		// //twitter
+		// emitTwitter(inc, socket)
+		// //stalls
+		// emitStalls(inc, socket)
+		// //all districts
+		// emitDistricts(inc, socket)
+		// //all networks
+		// emitUsers(inc, socket)
+		// //all Venues
+		// emitVenues(inc, socket)
+
 		//twitter
-		emitTwitter(inc, socket)
+		emitTwitter(inc)
 		//stalls
-		emitStalls(inc, socket)
+		emitStalls(inc)
 		//all districts
-		emitDistricts(inc, socket)
+		emitDistricts(inc)
 		//all networks
-		emitUsers(inc, socket)
+		emitUsers(inc)
 		//all Venues
-		emitVenues(inc, socket)
+		emitVenues(inc)
 
 	}
-	var run = setInterval(sendData, 2000);
-	socket.on('disconnect', function() {
-		clearInterval(run);
-	});
-});
+	//var run = setInterval(sendData, 2000);
+	//socket.on('disconnect', function() {
+	//	clearInterval(run);
+	//});
+//});
 
-//================
+/* count connected users, if nobody there stop emit*/
+var run;
+var usersConnected = 0
+io.sockets.on('connection', function(socket) {
+
+	usersConnected++
+	if(usersConnected == 1){
+		run = setInterval(sendData, 2000);
+	}
+	console.log(usersConnected)
+	socket.on('disconnect', function() {
+		usersConnected--
+		console.log(usersConnected)
+		if(usersConnected == 0){
+			clearInterval(run);
+			}
+	});
+
+})
 
 function emitTwitter(i, socket) {
 	var val = i % districts.general.length;
@@ -154,7 +196,8 @@ function emitTwitter(i, socket) {
 				res["features"].push(obj)
 			}
 		})
-		socket.emit('twitter', res);
+		//socket.emit('twitter', res);
+		io.sockets.emit('twitter', res);
 	});
 }
 
@@ -187,7 +230,8 @@ function emitStalls(i, socket) {
 				}
 			})
 		})
-		socket.emit('stalls', res);
+		//socket.emit('stalls', res);
+		io.sockets.emit('stalls', res);
 	});
 }
 
@@ -233,7 +277,8 @@ function emitDistricts(i, socket) {
 			counter = counter + 1;
 			if (counter == filtDistr.length) {
 				out["time"] = d[1][val].replace(/\.[^/.]+$/, "");
-				socket.emit("districts", out);
+				//socket.emit("districts", out);
+				io.sockets.emit("districts", out);
 			}
 		});
 	})
@@ -269,7 +314,8 @@ function emitUsers(i, socket) {
 				}
 			}
 			data.time = d[1][val].replace(/\.[^/.]+$/, "")
-			socket.emit("net-" + d[0], data)
+			//socket.emit("net-" + d[0], data)
+			io.sockets.emit("net-" + d[0], data)
 		});
 	})
 }
@@ -317,7 +363,8 @@ function emitVenues(i,socket) {
 			res.venues=totVenues;
 			if (d[0] === 'general') {
 			}
-			socket.emit("venue-" + d[0], res)
+			//socket.emit("venue-" + d[0], res)
+			io.sockets.emit("venue-" + d[0], res)
 		});
 		})
 }
