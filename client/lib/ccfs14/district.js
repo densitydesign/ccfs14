@@ -7,6 +7,7 @@
     var height = 600,
         width = 600,
         projection,
+        duration = 2000,
         dispatch = d3.dispatch("clicked");
 
 
@@ -29,13 +30,23 @@
         var path = d3.geo.path()
             .projection(projection)
 
-        chart.selectAll(".district")
-          .data(data.features)
+        var scaleOpacity = d3.scale.linear().range([1,0])
+        var opacityDomain = d3.extent(data.features.map(function(d){return d.properties.mobile}))
+        scaleOpacity.domain(opacityDomain)
+
+        var districts = chart.selectAll(".district").data(data.features, function(d){return d.properties.id})
+
+        districts
+          .transition()
+          .duration(duration)
+          .attr("fill-opacity", function(d){return scaleOpacity(d.properties.mobile)})
+
+        districts
           .enter().append("path")
-          .attr("class", ".district")
+          .attr("class", "district")
           .attr("d", path)
           .attr("fill", "black")
-          .attr("fill-opacity", function(d){return Math.random()})
+          .attr("fill-opacity", 1)
 
       }); //end selection
     } // end district
@@ -56,6 +67,12 @@
   district.projection = function(x){
     if (!arguments.length) return projection;
     projection = x;
+    return district;
+  }
+
+  district.duration = function(x){
+    if (!arguments.length) return duration;
+    duration = x;
     return district;
   }
 

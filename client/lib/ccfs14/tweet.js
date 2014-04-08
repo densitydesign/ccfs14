@@ -58,14 +58,15 @@
           .enter()
           .append("path")
           .attr("class", "tweet")
-          .attr("d", path.pointRadius(0))
+          //.attr("d", path.pointRadius(0))
+          .attr("d", path.pointRadius(function(d){return Math.sqrt((radiusScale(d.properties.social)/Math.PI))}))
           .attr("fill", "none")
           .attr("stroke", "#0EA789")
-          .attr("stroke-opacity", 1)
+          .attr("stroke-opacity", 0)
           .attr("stroke-width", 2)
             .transition()
             .duration(function(d){return durationScale(d.properties.social)})
-            .attr("d", path.pointRadius(function(d){return Math.sqrt((radiusScale(d.properties.social)/Math.PI))}))
+            //.attr("d", path.pointRadius(function(d){return Math.sqrt((radiusScale(d.properties.social)/Math.PI))}))
             .attr("stroke-opacity", 0.5)
 
         tweets
