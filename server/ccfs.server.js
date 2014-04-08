@@ -67,6 +67,7 @@ var bike_stall_url = data_url + "Bike/Stalls/"
 var users_url = data_url + "UsersSa/"
 var venuesTop_url = data_url + "VenuesTop/"
 var venuesSa_url = data_url + "VanuesSa/"
+var topnet_url = data_url + "TopVenuesHashtag/"
 var centroids;
 
 fs.readFile(data_url + "centroid_django.json", 'utf8', function(err, data) {
@@ -105,6 +106,7 @@ var bike_stalls = structureData(bike_stall_url)
 var users = structureData(users_url)
 var venuesTop = structureData(venuesTop_url)
 var venuesSa = structureData(venuesSa_url)
+var topnet = structureData(topnet_url)
 var venuesList={}		
 buildVenuesList(venuesTop, venuesList)
 
@@ -118,16 +120,6 @@ buildVenuesList(venuesTop, venuesList)
 
 	var sendData = function() {
 		inc++;
-		// //twitter
-		// emitTwitter(inc, socket)
-		// //stalls
-		// emitStalls(inc, socket)
-		// //all districts
-		// emitDistricts(inc, socket)
-		// //all networks
-		// emitUsers(inc, socket)
-		// //all Venues
-		// emitVenues(inc, socket)
 
 		//twitter
 		emitTwitter(inc)
@@ -139,6 +131,8 @@ buildVenuesList(venuesTop, venuesList)
 		emitUsers(inc)
 		//all Venues
 		emitVenues(inc)
+		//top venue and hastag
+		emitTop(inc)
 
 	}
 	//var run = setInterval(sendData, 2000);
@@ -146,6 +140,7 @@ buildVenuesList(venuesTop, venuesList)
 	//	clearInterval(run);
 	//});
 //});
+
 
 /* count connected users, if nobody there stop emit*/
 var run;
@@ -316,6 +311,48 @@ function emitUsers(i, socket) {
 			data.time = d[1][val].replace(/\.[^/.]+$/, "")
 			//socket.emit("net-" + d[0], data)
 			io.sockets.emit("net-" + d[0], data)
+		});
+	})
+}
+
+
+function emitTop(i, socket) {
+
+	var filtTop = _.pairs(_.pick(topnet, ['general', 'Brera', 'Tortona', 'Lambrate', 'PRomana']))
+	filtTop.forEach(function(d, j) {
+
+		var val = i % d[1].length;
+
+		var data;
+		var file_url;
+
+		if (d[0] === 'general')
+			file_url = topnet_url + d[1][val]
+		else
+			file_url = topnet_url + d[0] + "/" + d[1][val]
+
+		fs.readFile(file_url, 'utf8', function(err, data) {
+			if (err) {
+				console.log('Error: ' + err);
+				return;
+			}
+			try {
+				data = JSON.parse(data);
+			} catch (e) {
+				// An error has occured, handle it, by e.g. logging it
+				console.log(e);
+				data = {
+					"error" : e
+				}
+			}
+			var topVenue = data["topVenues"][0]
+			var topHashtag = data["topHashtags"][0]
+			var topTime = d[1][val].replace(/\.[^/.]+$/, "")
+			//socket.emit("net-" + d[0], data)
+			var res={"topVenue":topVenue, "topHashtag":topHashtag, "time":topTime};
+
+			if ( d[0] === 'general') console.log(res)
+			io.sockets.emit("top-" + d[0], res)
 		});
 	})
 }
