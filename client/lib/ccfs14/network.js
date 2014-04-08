@@ -72,7 +72,7 @@
         
 
 		var max = d3.max(data.nodes, function(e){return e.socialActivity});
-		var lerp = d3.scale.linear().domain([0,max]).range([0,1500])  
+		var lerp = d3.scale.linear().domain([0,max]).range([0,3000])  
 		force=d3.layout.force();
 		
 		force
@@ -82,8 +82,8 @@
 			  
 		force.size([width, height])
 		.gravity(.05)
-    .distance(60)
-    .charge(-100)
+    .distance(100)
+    .charge(-200)
 		.start();
 		
 		    var link = vis.selectAll("line.link")
@@ -132,7 +132,7 @@
             .style("opacity",1)
 		        
 		
-		    nodeEnter.filter(function(e){return e.socialActivity > 150})
+		    nodeEnter.filter(function(e){return e.socialActivity > 50})
 		    .append("clipPath")
 		    .attr("class","mask")
 		      .attr('id', function(d,i) { return "clip" + i })
@@ -141,7 +141,7 @@
 		      .attr("cy",0)
 		      .attr("r", function(d){return Math.sqrt(lerp(d.socialActivity)/Math.PI)-1})
 		
-		      nodeEnter.filter(function(e){return e.socialActivity > 150})
+		      nodeEnter.filter(function(e){return e.socialActivity > 50})
 		      .append("image")
 		      .attr("xlink:href", function(d){return d.avatar})
 		      .attr("x", function(d){return -Math.sqrt(lerp(d.socialActivity)/Math.PI)})
@@ -154,7 +154,7 @@
           .duration(500)
           .style("opacity",1)  
 		
-		    nodeEnter.filter(function(e){return e.socialActivity > 150})
+		    nodeEnter.filter(function(e){return e.socialActivity > 50})
 		    .append("text")
 		    .attr("x",0)
 		    .attr("y",function(d){return Math.sqrt(lerp(d.socialActivity)/Math.PI)+12})
