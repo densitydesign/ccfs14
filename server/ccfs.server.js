@@ -365,7 +365,6 @@ function emitVenues(i,socket) {
 		var res={}
 		var totVenues=_.map(venuesList[d[0]].venues, _.clone)
 		var maxSocialActivity = _.max(totVenues, function(d){ return d.utilsSocial}).utilsSocial
-		console.log(maxSocialActivity)
 		var val = i % d[1].length;
 		var data;
 		var file_url;

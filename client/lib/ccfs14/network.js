@@ -49,7 +49,7 @@
 			  
 		force.size([width, height])
 		.gravity(.05)
-    .distance(function(d){ return Math.sqrt(lerp(d.source.socialActivity)/Math.PI)*4+Math.sqrt(lerp(d.target.socialActivity)/Math.PI)*4})
+    .distance(function(d){ return Math.sqrt(lerp(d.source.socialActivity)/Math.PI)*7+Math.sqrt(lerp(d.target.socialActivity)/Math.PI)*7})
     .linkStrength(0.5)
     .charge(function(d) {return Math.sqrt(lerp(d.socialActivity)/Math.PI)*9*-1} )
 		.start();
