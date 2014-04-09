@@ -76,9 +76,9 @@
           .attr("x", 	0)
           .attr("width", function(d) { return x(d.socialActivity); })
           //.attr("y", function(d) { return y(d.name); })
-          .attr("y", function(d,i) { return ((i*25)+(i*15))+titleHeight+15 })
+          .attr("y", function(d,i) { return ((i*25)+(i*18))+titleHeight+18 })
           //.attr("height", function(d) { return y.rangeBand(); })
-          .attr("height", 15)
+          .attr("height", 18)
           .attr("fill", "#007BC0")
           .attr("fill-opacity", 0.5)
 
@@ -88,11 +88,11 @@
           .transition()
           .duration(duration)
           .attr("d", function(d,i) { return "M"+x(d.socialActivity)
-            +" "+(((i*25)+(i*15))+titleHeight+15)+
+            +" "+(((i*25)+(i*18))+titleHeight+18)+
             " L"+(x(d.socialActivity)+arrowWidth)
-            +" "+((((i*25)+(i*15))+titleHeight+15)+(15/2))
+            +" "+((((i*25)+(i*18))+titleHeight+18)+(18/2))
             +" L"+x(d.socialActivity)
-            +" "+((((i*25)+(i*15))+titleHeight+15)+(15))
+            +" "+((((i*25)+(i*18))+titleHeight+18)+(18))
             +" Z" })
 
         arrows.enter().append("path")
@@ -100,11 +100,11 @@
           .attr("fill", "#007BC0")
           .attr("fill-opacity", 0.5)
           .attr("d", function(d,i) { return "M"+x(d.socialActivity)
-            +" "+(((i*25)+(i*15))+titleHeight+15)+
+            +" "+(((i*25)+(i*18))+titleHeight+18)+
             " L"+(x(d.socialActivity)+arrowWidth)
-            +" "+((((i*25)+(i*15))+titleHeight+15)+(15/2))
+            +" "+((((i*25)+(i*18))+titleHeight+18)+(18/2))
             +" L"+x(d.socialActivity)
-            +" "+((((i*25)+(i*15))+titleHeight+15)+(15))
+            +" "+((((i*25)+(i*18))+titleHeight+18)+(18))
             +" Z" })
 
         var texts = chart.selectAll(".barnames").data(data)
@@ -113,12 +113,12 @@
           .attr("class", "barnames")
           .attr("x", 	0)
           //.attr("y", function(d) { return y(d.name); })
-          .attr("y", function(d,i) { return ((i*25)+(i*15))+titleHeight+15 })
+          .attr("y", function(d,i) { return ((i*25)+(i*18))+titleHeight+18 })
           .attr("fill", "#fff")
-          .attr("dx", 4)
-          .attr("dy", 11)
+          .attr("dx", 10)
+          .attr("dy", 13)
           .attr("font-family", "'clear_sans_lightregular', sans-serif")
-          .attr("font-size", "0.7em")
+          .attr("font-size", "0.8em")
           .text(function(d) { return d.name; })
 
         var values = chart.selectAll(".barvalues").data(data)
@@ -137,11 +137,11 @@
           .attr("class", "barvalues")
           .attr("x", width - arrowWidth*2)
           //.attr("y", function(d) { return y(d.name); })
-          .attr("y", function(d,i) { return ((i*25)+(i*15))+titleHeight+15 })
+          .attr("y", function(d,i) { return ((i*25)+(i*18))+titleHeight+18 })
           .attr("fill", "#fff")
-          .attr("dy", 11)
+          .attr("dy", 13)
           .attr("font-family", "'clear_sans_lightregular', sans-serif")
-          .attr("font-size", "0.7em")
+          .attr("font-size", "0.8em")
           .attr("text-anchor", "end")
           .text(function(d) { return d.socialActivity; })
 
