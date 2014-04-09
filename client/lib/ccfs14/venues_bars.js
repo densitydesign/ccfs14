@@ -6,6 +6,7 @@
 
     var height = 600,
         width = 600,
+        xMax,
         duration = 2000;
 
 
@@ -51,7 +52,7 @@
 
         //Setting scales and domains
 
-        var xMax = d3.max(data, function(d) { return d.socialActivity; });
+        //var xMax = d3.max(data, function(d) { return d.socialActivity; });
         var arrowWidth = 5;
 
         var x = d3.scale.linear()
@@ -163,6 +164,12 @@
     bars.duration = function(x){
       if (!arguments.length) return duration;
       duration = x;
+      return bars;
+    }
+
+    bars.xMax = function(x){
+      if (!arguments.length) return xMax;
+      xMax = x;
       return bars;
     }
 

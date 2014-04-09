@@ -151,10 +151,10 @@ io.sockets.on('connection', function(socket) {
 	if(usersConnected == 1){
 		run = setInterval(sendData, 2000);
 	}
-	console.log(usersConnected)
+	//console.log(usersConnected)
 	socket.on('disconnect', function() {
 		usersConnected--
-		console.log(usersConnected)
+		//console.log(usersConnected)
 		if(usersConnected == 0){
 			clearInterval(run);
 			}
@@ -351,7 +351,7 @@ function emitTop(i, socket) {
 			//socket.emit("net-" + d[0], data)
 			var res={"topVenue":topVenue, "topHashtag":topHashtag, "time":topTime};
 
-			if ( d[0] === 'general') console.log(res)
+			//if ( d[0] === 'general') console.log(res)
 			io.sockets.emit("top-" + d[0], res)
 		});
 	})
@@ -364,6 +364,8 @@ function emitVenues(i,socket) {
 	filtVen.forEach(function(d, j) {
 		var res={}
 		var totVenues=_.map(venuesList[d[0]].venues, _.clone)
+		var maxSocialActivity = _.max(totVenues, function(d){ return d.utilsSocial}).utilsSocial
+		console.log(maxSocialActivity)
 		var val = i % d[1].length;
 		var data;
 		var file_url;
@@ -389,6 +391,7 @@ function emitVenues(i,socket) {
 				}
 			}
 			res.time = d[1][val].replace(/\.[^/.]+$/, "")
+			res.maxValue = maxSocialActivity
 			data.venues.forEach(function(e,k){
 				
 				var curr=totVenues.filter(function(r){return r.id===e.id})[0]
@@ -422,7 +425,9 @@ function buildVenuesList(vtop, vlist) {
 				data.venues.forEach(function(d, i) {
 					delete d.latitude
 					delete d.longitude
+					d.utilsSocial = d.socialActivity;
 					d.socialActivity = 0;
+
 				})
 				vlist[v[0]] = data
 				

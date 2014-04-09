@@ -258,7 +258,8 @@ angular.module('ccfs14.directives', [])
 
             scope.$watch('venuesTopJson', function(newValue, oldValue){
               if(newValue != oldValue){
-                barVenueCont.datum(newValue.venues).call(barVenue)
+                console.log(newValue)
+                barVenueCont.datum(newValue.venues).call(barVenue.xMax(newValue.maxValue))
               }
             })
       }
