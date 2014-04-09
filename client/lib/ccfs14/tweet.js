@@ -48,33 +48,38 @@
 
         tweets
           //.attr("d", path.pointRadius(0))
-          .attr("stroke-opacity", 1)
+          //.attr("stroke-opacity", 1)
+          .attr("fill-opacity", 1)
           .transition()
           .duration(function(d){return durationScale(d.properties.social)})
           .attr("d", path.pointRadius(function(d){return Math.sqrt((radiusScale(d.properties.social)/Math.PI))}))
-          .attr("stroke-opacity", 0.5)
+          //.attr("stroke-opacity", 0.5)
+          .attr("fill-opacity", 0.5)
 
         tweets
           .enter()
           .append("path")
           .attr("class", "tweet")
-          //.attr("d", path.pointRadius(0))
-          .attr("d", path.pointRadius(function(d){return Math.sqrt((radiusScale(d.properties.social)/Math.PI))}))
-          .attr("fill", "none")
-          .attr("stroke", "#0EA789")
-          .attr("stroke-opacity", 0)
-          .attr("stroke-width", 2)
+          .attr("d", path.pointRadius(0))
+          //.attr("d", path.pointRadius(function(d){return Math.sqrt((radiusScale(d.properties.social)/Math.PI))}))
+          .attr("fill", "#0EA789")
+          .attr("fill-opacity", 0)
+          //.attr("stroke", "#0EA789")
+          //.attr("stroke-opacity", 0)
+          //.attr("stroke-width", 2)
             .transition()
             .duration(function(d){return durationScale(d.properties.social)})
             //.attr("d", path.pointRadius(function(d){return Math.sqrt((radiusScale(d.properties.social)/Math.PI))}))
-            .attr("stroke-opacity", 0.5)
+            //.attr("stroke-opacity", 0.5)
+            .attr("fill-opacity", 0.5)
 
         tweets
           .exit()
           .transition()
           .duration(duration*Math.random())
           .attr("d", path.pointRadius(0))
-          .attr("stroke-opacity", 0)
+          //.attr("stroke-opacity", 0)
+          .attr("fill-opacity", 0)
           .remove()
           
 
