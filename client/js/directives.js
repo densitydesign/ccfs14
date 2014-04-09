@@ -382,4 +382,34 @@ angular.module('ccfs14.directives', [])
       }
     }
   }])
+  .directive('topnet',[ 'fileService', '$timeout', 'monthsITFilter', function (fileService, $timeout, monthsIT){
+    return {
+      restrict: 'A',
+      replace: true,
+      disableCache: true,
+      templateUrl: 'partials/topvh.html',
+      link: function(scope, element, attrs) {
+        
+           scope.$watch('topJson', function(newValue, oldValue){
+          if(newValue != oldValue){
+            console.log(newValue)
+            scope.tvenue=null
+            scope.thash=null 
+
+            if(newValue.topVenue && newValue.topVenue.socialActivity>0) {
+              scope.tvenue=newValue.topVenue.name
+            }
+
+            if(newValue.topHashtag && newValue.topHashtag.socialActivity>0) {
+              scope.thash=newValue.topHashtag.name
+            }
+
+            //console.log(tvenue,thash)
+
+          }
+        })
+
+      }
+    }
+  }])
 

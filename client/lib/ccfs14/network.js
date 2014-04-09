@@ -12,25 +12,29 @@
     function net(selection){
       selection.each(function(data){
       
-      console.log("before update data")
       updateData()
-      console.log("after update data")
-        var vis,force;
+
+        var vis,force, lgroup;
       
         
         if (selection.select('svg').empty()){
-        	console.log("append svg")
+        	
 	          vis = selection.append('svg')
 	          .attr('width', width)
 	          .attr('height', height)
+          lgroup = vis.append("g")
+          .attr("class","lgroup");
 
         }
         else
         {
-        	console.log("svg is here")
           vis = selection.select('svg')
           .attr('width', width)
           .attr('height', height)
+
+          if(d3.select(".lgroup").length) lgroup=d3.select(".lgroup")
+          else lgroup = vis.append("g").attr("class","lgroup");
+
         }
         
 
@@ -45,11 +49,12 @@
 			  
 		force.size([width, height])
 		.gravity(.05)
-    .distance(100)
-    .charge(-200)
+    .distance(function(d){ return Math.sqrt(lerp(d.source.socialActivity)/Math.PI)*4+Math.sqrt(lerp(d.target.socialActivity)/Math.PI)*4})
+    .linkStrength(0.5)
+    .charge(function(d) {return Math.sqrt(lerp(d.socialActivity)/Math.PI)*9*-1} )
 		.start();
 		
-		    var link = vis.selectAll("line.link")
+		    var link = lgroup.selectAll("line.link")
 		    .data(force.links())
 		        
 		        
@@ -57,9 +62,10 @@
 		      .attr("class", "link")
 	        .style("stroke","#fff")
           .style("stroke-width",1)
+          .style("opacity",0.4)
 		
 		
-			  link.exit().remove();
+			  link.exit().transition().duration(500).style("opacity",0).remove();
 		
 		
 		    var node = vis.selectAll("g.node")
@@ -76,7 +82,7 @@
         .attr("r", function(d){d.act=false;return Math.sqrt(lerp(d.socialActivity)/Math.PI)})
         .style("stroke","#3b7")
         .style("fill","none")
-        .transition().duration(1000)
+        .transition().duration(2000)
         .attr("r", function(d){return Math.sqrt(lerp(d.socialActivity)/Math.PI)+50})
         .style("opacity",0)
         .remove()    
@@ -95,7 +101,7 @@
             .style("opacity",1)
 		        
 		
-		    nodeEnter.filter(function(e){return e.socialActivity > 50})
+		    nodeEnter.filter(function(e){return e.socialActivity > 90})
 		    .append("clipPath")
 		    .attr("class","mask")
 		      .attr('id', function(d,i) { return "clip" + i })
@@ -104,7 +110,7 @@
 		      .attr("cy",0)
 		      .attr("r", function(d){return Math.sqrt(lerp(d.socialActivity)/Math.PI)-1})
 		
-		      nodeEnter.filter(function(e){return e.socialActivity > 50})
+		      nodeEnter.filter(function(e){return e.socialActivity > 90})
 		      .append("image")
 		      .attr("xlink:href", function(d){return d.avatar})
 		      .attr("x", function(d){return -Math.sqrt(lerp(d.socialActivity)/Math.PI)})
@@ -117,7 +123,7 @@
           .duration(500)
           .style("opacity",1)  
 		
-		    nodeEnter.filter(function(e){return e.socialActivity > 50})
+		    nodeEnter.filter(function(e){return e.socialActivity > 90})
 		    .append("text")
 		    .attr("x",0)
 		    .attr("y",function(d){return Math.sqrt(lerp(d.socialActivity)/Math.PI)+12})

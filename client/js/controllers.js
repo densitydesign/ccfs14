@@ -111,6 +111,10 @@ angular.module('ccfs14.controllers', [])
       $scope.netJson = data
     });
 
+    ccfsSocket.on('top-general', function(data) {
+      $scope.topJson = data
+    });
+
     $scope.utils = {
       keys : [66,84,76,80,78,77]
     }
@@ -142,6 +146,10 @@ angular.module('ccfs14.controllers', [])
     ccfsSocket.on('net-'+mapDistrictUrlFilter($scope.info.districtId), function(data) {
       $scope.date = parseInt(data.time);
       $scope.netJson = data
+    });
+
+     ccfsSocket.on('top-'+mapDistrictUrlFilter($scope.info.districtId), function(data) {
+      $scope.topJson = data
     });
 
     $scope.utils = {
