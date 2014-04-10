@@ -48,6 +48,7 @@ angular.module('ccfs14.filters', [])
           {"key": "available bikes", values : []},
           {"key": "in use bikes", values : []}
         ]
+        
         data.steps.sort(function(a, b) { return d3.descending(a.start, b.start); })
         data.steps.forEach(function(d){
 
@@ -65,6 +66,7 @@ angular.module('ccfs14.filters', [])
         [{"key": "amount of calls", values : []}],
         [{"key": "amount of tweets", values : []}]
       ]
+
         data.steps.sort(function(a, b) { return d3.descending(a.start, b.start); })
         data.steps.forEach(function(d){
           timelines[0][0].values.push({date:d.start, value: d.mobily_activity})

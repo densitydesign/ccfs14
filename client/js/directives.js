@@ -312,12 +312,10 @@ angular.module('ccfs14.directives', [])
                 var i = d3.interpolateRound(parseInt(this.textContent), val);
                 return function(t) {
                   this.textContent = (i(t)<10?'0':'') + i(t);
+                  if(this.textContent == "59")
+                    this.textContent = '00'
                 };
               })
-              .each("end", function(){
-                if(this.textContent == '59')
-                  return this.textContent = '00'
-              });
 
           }
         })
