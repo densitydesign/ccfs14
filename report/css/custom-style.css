@@ -1,0 +1,56 @@
+body {
+	padding-top: 50px;
+	font-family: 'Clear Sans', sans-serif;
+	font-weight: 200;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	color: #00AE9F;
+	margin: 10px 0px;
+}
+
+h2 {
+	font-size: 21px;
+}
+
+h3 {
+	font-size: 18px;
+	font-weight: 400;
+}
+
+.navbar-inverse {
+	background-color: #000;
+	border-color: #080808;
+}
+
+.navbar-inverse .navbar-brand {
+	color: white;
+	font-size: 21px;
+	line-height: 16px;
+	font-weight: 300;
+	letter-spacing: 1px;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+	color: white;
+	font-weight: 300;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {
+	color: #009E91;
+	background-color: #262626;
+}
+
+.room-up-50 {
+	padding-top: 50px;
+}
+
+.row {
+	margin-bottom: 15px;
+	margin-top: 15px;
+}
+
+.no-room {
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
