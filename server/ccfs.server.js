@@ -249,7 +249,8 @@ function emitDistricts(i, socket) {
 			}
 			data = JSON.parse(data);
 			var mobileDomain = data.cells.map(function(d) {
-				return d.mobily_activity
+				//return d.mobily_activity
+				return d.mobily_anomaly
 			})
 			var mobileRange = [0, 100]
 			var cells = data.cells
@@ -262,7 +263,8 @@ function emitDistricts(i, socket) {
 					"type" : "Feature",
 					"properties" : {
 						"id" : d.id,
-						"mobile" : scaleValue(d.mobily_activity)
+						//"mobile" : scaleValue(d.mobily_activity)
+						"mobile" : scaleValue(d.mobily_anomaly)
 					}
 				}
 				//res["features"].push(obj)
@@ -345,6 +347,7 @@ function emitTop(i, socket) {
 					"error" : e
 				}
 			}
+
 			var topVenue = data["topVenues"][0]
 			var topHashtag = data["topHashtags"][0]
 			var topTime = d[1][val].replace(/\.[^/.]+$/, "")

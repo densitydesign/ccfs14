@@ -121,6 +121,7 @@
           .attr("font-size", "0.8em")
           .text(function(d) { return d.name; })
 
+        /*
         var values = chart.selectAll(".barvalues").data(data)
 
         values
@@ -145,7 +146,7 @@
           .attr("text-anchor", "end")
           .text(function(d) { return d.socialActivity; })
 
-
+        */
     	}); //end selection
     } // end bars
 

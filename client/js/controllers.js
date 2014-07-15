@@ -10,7 +10,11 @@ angular.module('ccfs14.controllers', [])
       city: "Milano",
       //startDate: 1365580799000
       //startDate: 1396907999000
-      startDate:1396994399000
+      //startDate:1396994399000
+      //startDate:1397080799000
+      //startDate:1397167199000
+      //startDate:1397253599000
+      startDate:1397275200000
     }
 
     //console.log(callsocialtimeline)
@@ -57,7 +61,11 @@ angular.module('ccfs14.controllers', [])
       district: $routeParams.district.replace("_", " "),
       //startDate: 1365580799000
       //startDate: 1396907999000
-      startDate:1396994399000
+      //startDate:1396994399000
+      //startDate:1397080799000
+      //startDate:1397167199000
+      //startDate:1397253599000
+      startDate:1397275200000
     }
     
     $scope.date = $scope.info.startDate;
@@ -105,7 +113,11 @@ angular.module('ccfs14.controllers', [])
       city: "Milano",
       //startDate: 1365580799000
       //startDate: 1396907999000
-      startDate:1396994399000
+      //startDate:1396994399000
+      //startDate:1397080799000
+      //startDate:1397167199000
+      //startDate:1397253599000
+      startDate:1397275200000
     }
     
     $scope.date = $scope.info.startDate;
@@ -141,7 +153,11 @@ angular.module('ccfs14.controllers', [])
       city: "Milano",
       //startDate: 1365580799000
       //startDate: 1396907999000,
-      startDate:1396994399000,
+       //startDate:1396994399000
+      //startDate:1397080799000
+      //startDate:1397167199000
+      //startDate:1397253599000
+      startDate:1397275200000,
       districtId: $routeParams.district,
       district: $routeParams.district.replace("_", " ")
     }

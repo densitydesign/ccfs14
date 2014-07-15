@@ -63,7 +63,7 @@ angular.module('ccfs14.directives', [])
 
         scope.$watch('bikemiJson', function(newValue, oldValue){
           if(newValue != oldValue){
-            chartBikemi.datum(newValue).call(bikemi)
+            //chartBikemi.datum(newValue).call(bikemi)
           }
         })
 
@@ -151,7 +151,7 @@ angular.module('ccfs14.directives', [])
 
         scope.$watch('bikemiJson', function(newValue, oldValue){
           if(newValue != oldValue){
-            chartBikemi.datum(newValue).call(bikemi)
+            //chartBikemi.datum(newValue).call(bikemi)
           }
         })
 
@@ -184,7 +184,7 @@ angular.module('ccfs14.directives', [])
 
           var chartBike = d3.select(element.find("#timeline-bike")[0])
 
-          chartBike.datum(scope.biketimeline).call(stackedBike)
+          //chartBike.datum(scope.biketimeline).call(stackedBike)
 
           var stackedTweet = ccfs.stackedArea()
                                     .width(element.find("#timeline-tweet").width())
@@ -207,7 +207,7 @@ angular.module('ccfs14.directives', [])
           scope.$watch('date', function(newValue, oldValue){
             if(newValue != oldValue){
 
-              chartBike.call(stackedBike.brushDate(newValue))
+              //chartBike.call(stackedBike.brushDate(newValue))
               chartCall.call(stackedCall.brushDate(newValue))
               chartTweet.call(stackedTweet.brushDate(newValue))
 
@@ -258,7 +258,6 @@ angular.module('ccfs14.directives', [])
 
             scope.$watch('venuesTopJson', function(newValue, oldValue){
               if(newValue != oldValue){
-                console.log(newValue)
                 barVenueCont.datum(newValue.venues).call(barVenue.xMax(newValue.maxValue))
               }
             })

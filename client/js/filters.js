@@ -70,6 +70,7 @@ angular.module('ccfs14.filters', [])
         data.steps.sort(function(a, b) { return d3.descending(a.start, b.start); })
         data.steps.forEach(function(d){
           timelines[0][0].values.push({date:d.start, value: d.mobily_activity})
+          //timelines[0][0].values.push({date:d.start, value: d.mobily_anomaly})
           timelines[1][0].values.push({date:d.start, value: d.social_activity})
 
         })
